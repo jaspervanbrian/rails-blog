@@ -4,10 +4,6 @@ Rails.application.routes.draw do
 
   get 'users/index'
 
-  resources :posts, :except => [:new] do
-    member do
-      get :delete
-    end
-  end
+  resources :posts, :except => [:new]
 
 end
