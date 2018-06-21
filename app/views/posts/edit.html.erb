@@ -1,16 +1,4 @@
-<%= render partial: 'nav' %>
-
-<% if !flash[:success].blank? %>
-	<div class="alert alert-success flash-message" role="alert">
-		<%= flash[:success] %>
-	</div>
-<% end %>
-
-<% if !flash[:danger].blank? %>
-	<div class="alert alert-danger flash-message" role="alert">
-		<%= flash[:danger] %>
-	</div>
-<% end %>
+<% @title = "Editing " + @post.title %>
 
 <div class="container">
 	<%= form_with scope: :post, model: @post, local: true do |p| %>

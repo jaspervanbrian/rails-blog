@@ -1,16 +1,4 @@
-<%= render partial: 'nav' %>
-
-<% if !flash[:success].blank? %>
-	<div class="alert alert-success flash-message" role="alert">
-		<%= flash[:success] %>
-	</div>
-<% end %>
-
-<% if !flash[:danger].blank? %>
-	<div class="alert alert-danger flash-message" role="alert">
-		<%= flash[:danger] %>
-	</div>
-<% end %>
+<% @title = @post.title %>
 
 <div class="container">
 	<div class="row">
@@ -58,8 +46,8 @@
       </div>
       <div class="modal-footer">
 		<%= form_with model: @post, method: :delete, class: 'form-horizontal', local: true do |p| %>
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-	        <%= p.submit "Delete Post", class: "btn btn-primary" %>
+	        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+	        <%= p.submit "Delete Post", class: "btn btn-danger" %>
 	    <% end %>
       </div>
     </div>
