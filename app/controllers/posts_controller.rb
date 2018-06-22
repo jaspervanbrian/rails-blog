@@ -9,7 +9,7 @@ class PostsController < ApplicationController
 
   def create
     post = Post.new(posts_params)
-    user = User.find_by_email("jaspervanbrianmartin@gmail.com")
+    user = User.first
     unless user.nil?
       user.posts << post
       flash[:success] = "Successfully posted a content!"

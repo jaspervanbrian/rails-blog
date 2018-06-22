@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   get 'users/index'
 
-  resources :posts, :except => [:new]
+  resources :posts, :except => [:new] do
+    resources :comments, only: [:create, :destroy]
+  end
 
 end

@@ -11,29 +11,38 @@
 					<%= form.text_area :body, :class => 'form-control', :placeholder => 'Say something here!', :rows => 5 %>
 				</div>
 				<div class="form-group">
-					<%= form.submit "Post", :class => 'btn btn-primary' %>
+					<%= form.submit "Post", :class => 'btn btn-danger' %>
 				</div>
 			<% end %>
 		</div>
-		<div class="col-8" style="max-height: 80vh; overflow-y: scroll;">
-			<div class="list-group">
-				<%
-					@posts.each do |post|
-				%>
-						<%= link_to post_path(post), { :class => 'list-group-item list-group-item-action flex-column align-items-start' } do %>
-							<div class="d-flex w-100 justify-content-between">
-								<h5 class="mb-1"><%= post.title %></h5>
-								<small class="text-muted"><%= post.created_at.strftime("%B %d, %Y | %l:%M %p") %></small>
+		<div class="col-8">
+			<% if @posts.length > 0 %>
+				<div class="list-group">
+					<%
+						@posts.each do |post|
+					%>
+						<div class="card mb-4">
+							<div class="card-body">
+								<h4 class="card-title mb-1"><%= post.title %></h4>
+								<h6 class="card-subtitle mb-2 text-muted"><%= post.user.name %></h6>
+								<p class="card-text mb-1">
+									<%= simple_format(truncate(post.body), length: 50) %>
+								</p>
+								<%= link_to("Read more...", post_path(post) , class: "btn btn-outline-dark") %>
 							</div>
-							<p class="mb-1">
-								<%= simple_format(truncate(post.body), length: 20) %>
-							</p>
-							<small class="text-muted">by <%= post.user.name %></small>
-						<% end %>
-				<%
-					end
-				%>
-			</div>
+							<div class="card-footer">
+								<small class="text-muted"><%= post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") %></small>
+							</div>
+						</div>
+					<%
+						end
+					%>
+				</div>
+			<% else %>
+				<div class="alert alert-info">
+					No posts yet.
+				</div>
+			<% end %>
 		</div>
 	</div>
 </div>

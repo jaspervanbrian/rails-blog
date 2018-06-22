@@ -18,6 +18,10 @@
 @import "font-awesome-sprockets";
 @import "font-awesome";
 
+.navbar {
+	height: 12vh;
+}
+
 .flash-message {
 	position: fixed !important;
 	left: 20px;
