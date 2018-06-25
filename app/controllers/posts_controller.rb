@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   def index
-    @posts = Post.latest
+    @posts = Post.latest.page(params[:page])
   end
 
   def show
