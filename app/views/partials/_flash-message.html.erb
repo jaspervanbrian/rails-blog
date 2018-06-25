@@ -4,8 +4,8 @@
 	</div>
 <% end %>
 
-<% if !flash[:danger].blank? %>
+<% if !flash[:error].blank? %>
 	<div class="alert alert-danger flash-message" role="alert">
-		<%= flash[:danger] %>
+		<%= flash[:error] %>
 	</div>
 <% end %>

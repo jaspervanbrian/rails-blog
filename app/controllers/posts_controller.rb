@@ -1,6 +1,8 @@
 class PostsController < ApplicationController
+  before_action :get_posts, only: [:index, :create]
+
   def index
-    @posts = Post.latest.page(params[:page])
+    @post = Post.new
   end
 
   def show
@@ -8,15 +10,21 @@ class PostsController < ApplicationController
   end
 
   def create
-    post = Post.new(posts_params)
+    @post = Post.new(posts_params)
     user = User.first
     unless user.nil?
-      user.posts << post
-      flash[:success] = "Successfully posted a content!"
+      user.posts << @post
+      if @post.valid?
+        flash[:success] = "Successfully posted a content!"
+        redirect_to :action => 'index'
+      else
+        flash.now[:error] = "Error posting content."
+        render :index
+      end
     else
-      flash[:error] = "Error posting content."
+      flash.now[:error] = "Error posting content."
+      render :index
     end
-    redirect_to :action => 'index'
   end
 
   def edit
@@ -29,7 +37,7 @@ class PostsController < ApplicationController
       flash[:success] = "Successfully updated the post!"
       redirect_to action: 'show'
     else
-      flash[:error] = "Error updating the post."
+      flash.now[:error] = "Error updating the post."
       render :edit
     end
   end
@@ -47,4 +55,7 @@ class PostsController < ApplicationController
     params.require(:post).permit(:title, :body)
   end
 
+  def get_posts
+    @posts = Post.latest.page(params[:page])
+  end
 end
