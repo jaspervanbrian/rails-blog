@@ -13,6 +13,11 @@
           <%= icon("fas", "home") %> Home
         <% end %>
       </li>
+      <li class="nav-item">
+        <%= link_to logout_path, class: "nav-link", method: :post do %>
+          <%= icon("fas", "sign-out-alt") %> Logout
+        <% end %>
+      </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="text" placeholder="Search by title" aria-label="Search">

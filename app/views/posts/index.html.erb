@@ -36,6 +36,7 @@
 								<div class="card-body">
 									<h4 class="card-title mb-1"><%= post.title %></h4>
 									<h6 class="card-subtitle mb-2 text-muted"><%= post.user.name %></h6>
+									<hr>
 									<p class="card-text mb-1">
 										<%= simple_format(truncate(post.body, length: 100)) %>
 									</p>

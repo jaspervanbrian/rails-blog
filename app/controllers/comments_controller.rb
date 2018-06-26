@@ -1,4 +1,7 @@
 class CommentsController < ApplicationController
+  before_action :confirm_authenticated
+  before_action :confirm_comment_ownership, only: [:destroy]
+
   def create
     post = Post.find(params[:post_id])
     user = User.first
@@ -13,4 +16,20 @@ class CommentsController < ApplicationController
   def destroy
   end
 
+  private 
+  
+  def confirm_authenticated
+    unless session[:user_id]
+      flash[:error] = "Please log in first."
+      redirect_to login_path
+    end
+  end
+
+  def confirm_comment_ownership
+    comment = Comment.find_by(id: params[:id])
+    unless comment.user_id.to_i === session[:user_id].to_i
+      flash[:error] = "Invalid action."
+      redirect_to post_path(params[:post_id])
+    end
+  end
 end

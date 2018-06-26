@@ -8,9 +8,9 @@
 					<h5 class="mb-1"><%= @post.title %></h5>
 					<small class="text-muted"><%= @post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") %></small>
 				</div>
-				<small class="text-muted">
-					by <span class="badge badge-pill badge-primary"><%= @post.user.name %></span> <%= @post.created_at === @post.updated_at ? "" : "(Last update: " + @post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") + ")" %>
-				</small>
+				<h6 class="d-inline">
+					by <span class="badge badge-pill badge-danger"><%= @post.user.name %></span> <%= @post.created_at === @post.updated_at ? "" : "(Last update: " + @post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") + ")" %>
+				</h6>
 				<div class="float-right">
 					<%= link_to icon('fas', 'edit'), edit_post_path, class: "btn btn-outline-primary mr-4" %>
 					<button type="button" class="btn btn-outline-danger float-right" data-toggle="modal" data-target="#deleteModal"><%= icon('far', 'trash-alt') %></button>
