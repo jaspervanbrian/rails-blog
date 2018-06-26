@@ -16,14 +16,7 @@ class CommentsController < ApplicationController
   def destroy
   end
 
-  private 
-  
-  def confirm_authenticated
-    unless session[:user_id]
-      flash[:error] = "Please log in first."
-      redirect_to login_path
-    end
-  end
+  private
 
   def confirm_comment_ownership
     comment = Comment.find_by(id: params[:id])

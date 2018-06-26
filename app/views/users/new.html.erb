@@ -2,6 +2,7 @@
 
 <div class="card-body">
 	<%= form_with scope: :user, url: sign_up_path, model: @user, class: "form-signin form-horizontal needs-validation", html: {novalidate: true}, local: true do |form| %>
+		<div class="d-flex justify-content-center"><%= image_tag "logos/logo.png", class: "align-self-center" %></div>
 		<p id="profile-name" class="profile-name-card">Sign up now!</p>
 		<span id="reauth-email" class="reauth-email"></span>
 		<div class="form-group">
@@ -44,7 +45,7 @@
 			</div>
 			<div class="col-6">
 				<div class="form-group">
-					<%= link_to "Back", login_path , class: "btn btn-block btn-danger" %>
+					<%= link_to "Back", login_path , class: "btn btn-block btn-secondary" %>
 				</div>
 			</div>
 		</div>

@@ -61,13 +61,6 @@ class PostsController < ApplicationController
     @posts = Post.latest.page(params[:page])
   end
 
-  def confirm_authenticated
-    unless session[:user_id]
-      flash[:error] = "Please log in first."
-      redirect_to login_path
-    end
-  end
-
   def confirm_post_ownership
     post = Post.find_by(id: params[:id])
     unless post.user_id.to_i === session[:user_id].to_i
