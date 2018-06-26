@@ -14,8 +14,14 @@
         <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to logout_path, class: "nav-link", method: :post do %>
-          <%= icon("fas", "sign-out-alt") %> Logout
+        <% if session[:user_id] %>
+          <%= link_to logout_path, class: "nav-link", method: :post do %>
+            <%= icon("fas", "sign-out-alt") %> Logout
+          <% end %>
+        <% else %>
+          <%= link_to login_path, class: "nav-link" do %>
+            <%= icon("fas", "sign-in-alt") %> Login
+          <% end %>
         <% end %>
       </li>
     </ul>

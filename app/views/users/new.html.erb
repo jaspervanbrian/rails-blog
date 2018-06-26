@@ -1,20 +1,40 @@
-<% @title = "Login to Rails-Blog" %>
+<% @title = "Register" %>
 
 <div class="card-body">
 	<%= form_with scope: :user, url: sign_up_path, model: @user, class: "form-signin form-horizontal needs-validation", html: {novalidate: true}, local: true do |form| %>
 		<p id="profile-name" class="profile-name-card">Sign up now!</p>
 		<span id="reauth-email" class="reauth-email"></span>
 		<div class="form-group">
-			<%= form.text_field :name, class: "form-control", placeholder: "Full name", required: true, autofocus: true %>
+			<%= form.text_field :name, class: "form-control #{ @user.errors.include?(:name) ? 'is-invalid' : ''} #{ @user.errors.include?(:title) ? 'is-invalid' : ''}", placeholder: "Full name", required: true, autofocus: true %>
+			<% if @user.errors.include?(:name) %>
+				<div class="invalid-feedback">
+					<%= @user.errors[:name].join(", ") %>
+				</div>
+			<% end %>
 		</div>
 		<div class="form-group">
-			<%= form.email_field :email, class: "form-control", placeholder: "Email address", id: "inputEmail", required: true, autofocus: true %>
+			<%= form.email_field :email, class: "form-control #{ @user.errors.include?(:email) ? 'is-invalid' : ''}", placeholder: "Email address", id: "inputEmail", required: true, autofocus: true %>
+			<% if @user.errors.include?(:email) %>
+				<div class="invalid-feedback">
+					<%= @user.errors[:email].join(", ") %>
+				</div>
+			<% end %>
 		</div>
 		<div class="form-group">
-			<%= form.password_field :password, class: "form-control", placeholder: "Password", id: "inputPassword", required: true %>
+			<%= form.password_field :password, class: "form-control #{ @user.errors.include?(:password) ? 'is-invalid' : ''}", placeholder: "Password", id: "inputPassword", required: true %>
+			<% if @user.errors.include?(:password) %>
+				<div class="invalid-feedback">
+					<%= @user.errors[:password].join(", ") %>
+				</div>
+			<% end %>
 		</div>
 		<div class="form-group">
-			<%= form.password_field :password_confirmation, class: "form-control", placeholder: "Confirm Password", required: true %>
+			<%= form.password_field :password_confirmation, class: "form-control #{ @user.errors.include?(:password_confirmation) ? 'is-invalid' : ''}", placeholder: "Confirm Password", required: true %>
+			<% if @user.errors.include?(:password_confirmation) %>
+				<div class="invalid-feedback">
+					<%= @user.errors[:password_confirmation].join(", ") %>
+				</div>
+			<% end %>
 		</div>
 		<div class="row">
 			<div class="col-6">

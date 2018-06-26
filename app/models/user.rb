@@ -3,8 +3,8 @@ class User < ApplicationRecord
   has_many :comments
 
   validates :name, presence: true
-  validates :password_digest, length: { minimum: 8 }, presence: true
-  validates :email, presence: true
+  validates :password, length: { minimum: 8 }, presence: true
+  validates :email, presence: true, 'valid_email_2/email': true
 
   has_secure_password
   # attr_reader :password

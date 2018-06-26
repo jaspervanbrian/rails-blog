@@ -1,10 +1,11 @@
 class AuthenticationController < ApplicationController
   before_action :confirm_authenticated, only: [:logout]
+  before_action :is_logged_in, only: [:login, :attempt]
 
   layout "authentication"
 
   def login
-
+    @user = User.new
   end
 
   def attempt
@@ -12,6 +13,7 @@ class AuthenticationController < ApplicationController
     if params[:email].present? && params[:password].present?
       user = User.find_by(email: params[:email])
       if user
+        puts params[:password]
         authorized = user.authenticate(params[:password])
       end
     end
@@ -33,11 +35,17 @@ class AuthenticationController < ApplicationController
   end
 
   private 
-  
+
   def confirm_authenticated
     unless session[:user_id]
       flash[:error] = "Please log in first."
       redirect_to login_path
+    end
+  end
+
+  def is_logged_in
+    unless session[:user_id].nil?
+      redirect_to root_path
     end
   end
 end

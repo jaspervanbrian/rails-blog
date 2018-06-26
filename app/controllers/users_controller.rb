@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  layout "authentication", only: [:new]
+  layout "authentication", only: [:new, :create]
 
   def show
     @user = User.find(params[:id])

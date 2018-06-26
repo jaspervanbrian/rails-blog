@@ -11,10 +11,10 @@
 					</div>
 					<small class="text-muted">by <%= @post.user.name %> <%= @post.created_at === @post.updated_at ? "" : "(Last update: " + @post.created_at.strftime("%B %d, %Y | %l:%M %p") + ")" %></small>
 					<div class="float-right">
-						<%= p.button type: "submit", class: "btn btn-primary" do %>
+						<%= p.button type: "submit", class: "btn btn-success" do %>
 							<%= icon("fas", "check") %>
 						<% end %>
-						<%= link_to @post, class: "btn btn-danger" do %>
+						<%= link_to @post, class: "btn btn-secondary" do %>
 							<%= icon("fas", "times") %>
 						<% end %>
 					</div>
