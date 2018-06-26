@@ -29,16 +29,26 @@
 	<hr>
 	<div class="row">
 		<div class="col-10">
-			<div class="form-group">
-				<%= form_with url: post_comments_path(@post), local: true do |form| %>
-					<div class="input-group">
-						<%= form.text_field :body, class: "form-control", placeholder: "Say something..." %>
-						<div class="input-group-append">
-							<%= form.submit "Reply", class: "btn btn-danger" %>
+			<% if session[:user_id] %>
+				<div class="form-group">
+					<%= form_with url: post_comments_path(@post), local: true do |form| %>
+						<div class="input-group">
+							<%= form.text_field :body, class: "form-control", placeholder: "Say something..." %>
+							<div class="input-group-append">
+								<%= form.submit "Reply", class: "btn btn-danger" %>
+							</div>
+						</div>
+					<% end %>
+				</div>
+			<% else %>
+				<div class="form-group">
+					<div class="card">
+						<div class="card-body">
+							<h6><%= link_to "Log in", login_path %> to comment on this post!</h6>
 						</div>
 					</div>
-				<% end %>
-			</div>
+				</div>
+			<% end %>
 			<div class="list-group">
 				<% if @post.comments.length > 0 %>
 					<% @post.comments.each do |comment| %>
