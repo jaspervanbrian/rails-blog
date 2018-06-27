@@ -4,7 +4,7 @@ class CommentsController < ApplicationController
 
   def create
     post = Post.find(params[:post_id])
-    user = User.first
+    user = User.find_by(id: session[:user_id])
     if Comment.create(body: params[:body], user: user, post: post).valid?
       flash[:success] = "Successfully comented on the post!"
     else

@@ -11,4 +11,11 @@ class Post < ApplicationRecord
   validates :title, presence: true, length: { maximum: 255 }
   validates :body, presence: true
 
+  before_destroy :remove_comments
+
+  private
+
+  def remove_comments
+    self.comments.destroy_all
+  end
 end
