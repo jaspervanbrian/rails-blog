@@ -11,7 +11,7 @@ class AuthenticationController < ApplicationController
   def attempt
     authorized = false
     if params[:email].present? && params[:password].present?
-      user = User.find_by(email: params[:email])
+      user = User.find_by(email: params[:email].downcase)
       if user
         authorized = user.authenticate(params[:password])
       end
@@ -19,7 +19,7 @@ class AuthenticationController < ApplicationController
 
     if authorized # checks if user is already authorized
       helpers.log_in authorized
-      helpers.remember authorized
+      params[:remember_me] == '1' ? helpers.remember(authorized) : helpers.forget(authorized)
       redirect_to root_path
     else
       flash.now[:error] = "Invalid login credentials."

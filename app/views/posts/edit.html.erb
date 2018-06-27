@@ -9,7 +9,10 @@
 						<h5 class="mb-1"><%= @post.title %></h5>
 						<small class="text-muted"><%= @post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") %></small>
 					</div>
-					<small class="text-muted">by <%= @post.user.name %> <%= @post.created_at === @post.updated_at ? "" : "(Last update: " + @post.created_at.strftime("%B %d, %Y | %l:%M %p") + ")" %></small>
+					<h6 class="d-inline">
+						by <span class="badge badge-pill badge-danger"><%= @post.user.full_name %></span>
+					</h6>
+					<small class="text-muted"><%= @post.created_at === @post.updated_at ? "" : "(Last update: " + @post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") + ")" %></small>
 					<div class="float-right">
 						<%= p.button type: "submit", class: "btn btn-success" do %>
 							<%= icon("fas", "check") %>
@@ -20,7 +23,12 @@
 					</div>
 					<hr class="mt-4 mb-4">
 					<p class="mb-1">
-						<%= p.text_area :body, rows: 10, class: "form-control", placeholder: "Say something..." %>
+						<%= p.text_area :body, rows: 10, class: "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", placeholder: "Say something..." %>
+						<% if @post.errors.include?(:body) %>
+							<div class="invalid-feedback">
+								<%= @post.errors[:body].join(", ").capitalize %>
+							</div>
+						<% end %>
 					</p>
 				</div>
 			</div>

@@ -5,7 +5,10 @@ class User < ApplicationRecord
   has_many :comments
 
   before_save { self.email = email.downcase }
-  validates :name, presence: true, length: { maximum: 255 }
+  before_save { self.first_name = first_name.capitalize }
+  before_save { self.last_name = last_name.capitalize }
+  validates :first_name, presence: true, length: { maximum: 50 }
+  validates :last_name, presence: true, length: { maximum: 50 }
   validates :password, length: { minimum: 8, maximum: 255 }, presence: true
   validates :email, presence: true, 'valid_email_2/email': true, length: { maximum: 255 }
 
@@ -41,5 +44,9 @@ class User < ApplicationRecord
   # Forget user
   def forget
     update_attribute(:remember_digest, nil)
+  end
+
+  def full_name
+    return self.first_name + " " + self.last_name
   end
 end

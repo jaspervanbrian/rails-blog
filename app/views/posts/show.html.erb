@@ -9,10 +9,11 @@
 					<small class="text-muted"><%= @post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") %></small>
 				</div>
 				<h6 class="d-inline">
-					by <span class="badge badge-pill badge-danger"><%= @post.user.name %></span> <%= @post.created_at === @post.updated_at ? "" : "(Last update: " + @post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") + ")" %>
+					by <span class="badge badge-pill badge-danger"><%= @post.user.full_name %></span>
 				</h6>
-				<% if session[:user_id] %>
-					<% if session[:user_id] === @post.user_id %>
+				<small class="text-muted"><%= @post.created_at === @post.updated_at ? "" : "(Last update: " + @post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") + ")" %></small>
+				<% if logged_in? %>
+					<% if @current_user.id === @post.user_id %>
 						<div class="float-right">
 							<%= link_to icon('fas', 'edit'), edit_post_path, class: "btn btn-outline-danger mr-4" %>
 							<button type="button" class="btn btn-outline-dark float-right" data-toggle="modal" data-target="#deleteModal"><%= icon('far', 'trash-alt') %></button>
@@ -29,7 +30,7 @@
 	<hr>
 	<div class="row">
 		<div class="col-10">
-			<% if session[:user_id] %>
+			<% if logged_in? %>
 				<div class="form-group">
 					<%= form_with url: post_comments_path(@post), local: true do |form| %>
 						<div class="input-group">

@@ -6,18 +6,30 @@
 		<p id="profile-name" class="profile-name-card">Sign up now!</p>
 		<span id="reauth-email" class="reauth-email"></span>
 		<div class="form-group">
-			<%= form.text_field :name, class: "form-control #{ @user.errors.include?(:name) ? 'is-invalid' : ''} #{ @user.errors.include?(:title) ? 'is-invalid' : ''}", placeholder: "Full name", required: true, autofocus: true %>
-			<% if @user.errors.include?(:name) %>
-				<div class="invalid-feedback">
-					<%= @user.errors[:name].join(", ") %>
+			<div class="row">
+				<div class="col-6">
+					<%= form.text_field :first_name, class: "form-control #{ @user.errors.include?(:first_name) ? 'is-invalid' : '' }", placeholder: "First name", required: true, autofocus: true %>
+					<% if @user.errors.include?(:first_name) %>
+						<div class="invalid-feedback">
+							<%= @user.errors[:first_name].join(", ").capitalize %>
+						</div>
+					<% end %>
 				</div>
-			<% end %>
+				<div class="col-6">
+					<%= form.text_field :last_name, class: "form-control #{ @user.errors.include?(:last_name) ? 'is-invalid' : '' }", placeholder: "Last name", required: true %>
+					<% if @user.errors.include?(:last_name) %>
+						<div class="invalid-feedback">
+							<%= @user.errors[:last_name].join(", ").capitalize %>
+						</div>
+					<% end %>
+				</div>
+			</div>
 		</div>
 		<div class="form-group">
-			<%= form.email_field :email, class: "form-control #{ @user.errors.include?(:email) ? 'is-invalid' : ''}", placeholder: "Email address", id: "inputEmail", required: true, autofocus: true %>
+			<%= form.email_field :email, class: "form-control #{ @user.errors.include?(:email) ? 'is-invalid' : '' }", placeholder: "Email address", id: "inputEmail", required: true %>
 			<% if @user.errors.include?(:email) %>
 				<div class="invalid-feedback">
-					<%= @user.errors[:email].join(", ") %>
+					<%= @user.errors[:email].join(", ").capitalize %>
 				</div>
 			<% end %>
 		</div>
@@ -25,7 +37,7 @@
 			<%= form.password_field :password, class: "form-control #{ @user.errors.include?(:password) ? 'is-invalid' : ''}", placeholder: "Password", id: "inputPassword", required: true %>
 			<% if @user.errors.include?(:password) %>
 				<div class="invalid-feedback">
-					<%= @user.errors[:password].join(", ") %>
+					<%= @user.errors[:password].join(", ").capitalize %>
 				</div>
 			<% end %>
 		</div>
@@ -33,7 +45,7 @@
 			<%= form.password_field :password_confirmation, class: "form-control #{ @user.errors.include?(:password_confirmation) ? 'is-invalid' : ''}", placeholder: "Confirm Password", required: true %>
 			<% if @user.errors.include?(:password_confirmation) %>
 				<div class="invalid-feedback">
-					<%= @user.errors[:password_confirmation].join(", ") %>
+					<%= @user.errors[:password_confirmation].join(", ").capitalize %>
 				</div>
 			<% end %>
 		</div>

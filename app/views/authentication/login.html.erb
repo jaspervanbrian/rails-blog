@@ -18,9 +18,10 @@
 		</div>
 		<div class="form-group">
 			<div id="remember" class="checkbox">
-				<label>
-					<input type="checkbox" value="remember-me"> Remember me
-				</label>
+				<%= form.label :remember_me do %>
+					<%= form.check_box :remember_me %>
+					<span>Remember me</span>
+				<% end %>
 			</div>
 			<%= form.submit "Log In", class: "btn btn-lg btn-primary btn-block btn-signin" %>
 		</div>

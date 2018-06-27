@@ -3,13 +3,13 @@
 <div class="container">
 	<div class="row">
 		<div class="col-4">
-			<% if session[:user_id] %>
+			<% if logged_in? %>
 				<%= form_with scope: :post, model: @post, class: 'form-horizontal needs-validation', html: {novalidate: true}, local: true do |form| %>
 					<div class="form-group">
 						<%= form.text_field :title, :class => "form-control #{ @post.errors.include?(:title) ? 'is-invalid' : ''}", :placeholder => 'Title of your post', maxlength: 50 %>
 						<% if @post.errors.include?(:title) %>
 							<div class="invalid-feedback">
-								<%= @post.errors[:title].join(", ") %>
+								<%= @post.errors[:title].join(", ").capitalize %>
 							</div>
 						<% end %>
 					</div>
@@ -17,7 +17,7 @@
 						<%= form.text_area :body, :class => "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", :placeholder => 'Say something here!', :rows => 5 %>
 						<% if @post.errors.include?(:body) %>
 							<div class="invalid-feedback">
-								<%= @post.errors[:body].join(", ") %>
+								<%= @post.errors[:body].join(", ").capitalize %>
 							</div>
 						<% end %>
 					</div>
@@ -52,7 +52,7 @@
 							<div class="card mb-4">
 								<div class="card-body">
 									<h4 class="card-title mb-1"><%= post.title %></h4>
-									<h6 class="card-subtitle mb-2 text-muted"><%= post.user.name %></h6>
+									<h6 class="card-subtitle mb-2 text-muted"><%= post.user.full_name %></h6>
 									<hr>
 									<p class="card-text mb-1">
 										<%= simple_format(truncate(post.body, length: 100)) %>
