@@ -2,7 +2,12 @@ class UsersController < ApplicationController
   layout "authentication", only: [:new, :create]
 
   def show
-    @user = User.find(params[:id])
+    @user = User.find_by(id: params[:id])
+    @posts = @user.posts.latest.page(params[:page])
+  end
+
+  def edit
+    @user = User.find_by(id: params[:id])
   end
 
   def new
