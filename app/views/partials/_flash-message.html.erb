@@ -1,10 +1,10 @@
-<% if !flash[:success].blank? %>
+<% if flash[:success].present? %>
 	<div class="alert alert-success flash-message" role="alert">
 		<%= flash[:success] %>
 	</div>
 <% end %>
 
-<% if !flash[:error].blank? %>
+<% if flash[:error].present? %>
 	<div class="alert alert-danger flash-message" role="alert">
 		<%= flash[:error] %>
 	</div>

@@ -1,8 +1,10 @@
 class User < ApplicationRecord
   attr_accessor :remember_token
 
-  has_many :posts
-  has_many :comments
+  has_one_attached :profile_avatar
+  has_one_attached :profile_banner
+  has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }
@@ -12,9 +14,6 @@ class User < ApplicationRecord
   before_save { self.email = email.downcase }
   before_save { self.first_name = first_name.capitalize }
   before_save { self.last_name = last_name.capitalize }
-
-  before_destroy :remove_comments
-  before_destroy :remove_posts
 
   has_secure_password
   # attr_reader :password
@@ -52,15 +51,5 @@ class User < ApplicationRecord
 
   def full_name
     return self.first_name + " " + self.last_name
-  end
-
-  private
-
-  def remove_comments
-    self.comments.destroy_all
-  end
-
-  def remove_posts
-    self.posts.destroy_all
   end
 end

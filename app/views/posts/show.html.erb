@@ -9,7 +9,10 @@
 					<small class="text-muted"><%= @post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") %></small>
 				</div>
 				<h6 class="d-inline">
-					by <span class="badge badge-pill badge-danger"><%= @post.user.full_name %></span>
+					by 
+					<%= link_to user_path(@post.user) do %>
+						<span class="badge badge-pill badge-danger"><%= @post.user.full_name %></span>
+					<% end %>
 				</h6>
 				<small class="text-muted"><%= @post.created_at === @post.updated_at ? "" : "(Last update: " + @post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") + ")" %></small>
 				<% if logged_in? %>

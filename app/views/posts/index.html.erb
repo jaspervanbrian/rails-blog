@@ -1,25 +1,27 @@
 <% @title = "All Posts" %>
 
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-4">
 			<% if logged_in? %>
 				<%= form_with scope: :post, model: @post, class: 'form-horizontal needs-validation', html: {novalidate: true}, local: true do |form| %>
 					<div class="card">
 						<div class="card-header">
-							<%= form.text_field :title, :class => "form-control #{ @post.errors.include?(:title) ? 'is-invalid' : ''}", :placeholder => 'Title of your post', maxlength: 50 %>
-							<% if @post.errors.include?(:title) %>
-							<div class="invalid-feedback">
-								<%= @post.errors[:title].join(", ").capitalize %>
-							</div>
-							<% end %>
+							<h6>What's on your mind <%= @current_user.first_name %>?</h6>
 						</div>
 						<div class="card-body">
+							<%= form.text_field :title, :class => "form-control #{ @post.errors.include?(:title) ? 'is-invalid' : ''}", :placeholder => 'Title of your post', maxlength: 50 %>
+							<% if @post.errors.include?(:title) %>
+								<div class="invalid-feedback">
+									<%= @post.errors[:title].join(", ").capitalize %>
+								</div>
+							<% end %>
+							<hr>
 							<%= form.text_area :body, :class => "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", :placeholder => 'Say something here!', :rows => 9 %>
 							<% if @post.errors.include?(:body) %>
-							<div class="invalid-feedback">
-								<%= @post.errors[:body].join(", ").capitalize %>
-							</div>
+								<div class="invalid-feedback">
+									<%= @post.errors[:body].join(", ").capitalize %>
+								</div>
 							<% end %>
 						</div>
 						<div class="card-footer">
@@ -44,40 +46,7 @@
 			<% end %>
 		</div>
 		<div class="col-8">
-			<% if @posts.length > 0 %>
-				<div class="list-group">
-					<div style="height: 75vh !important; overflow-y: scroll;">
-						<%
-							@posts.each do |post|
-						%>
-							<div class="card mb-4">
-								<div class="card-body">
-									<h4 class="card-title mb-1"><%= post.title %></h4>
-									<%= link_to user_path(post.user) do %>
-										<h6 class="card-subtitle mb-2 badge badge-pill badge-danger">
-											<%= post.user.full_name %>
-										</h6>
-									<% end %>
-									<hr>
-									<p class="card-text mb-1">
-										<%= simple_format(truncate(post.body, length: 100)) %>
-									</p>
-								</div>
-								<div class="card-footer">
-									<%= link_to("Read more...", post_path(post) , class: "btn btn-outline-dark") %>
-									<small class="text-muted float-right"><%= post.created_at.strftime("%B %d, %Y | %A, %l:%M %p") %></small>
-								</div>
-							</div>
-						<%
-							end
-						%></div>
-				</div>
-				<%= paginate @posts, window: 3 %>
-			<% else %>
-				<div class="alert alert-info">
-					No posts yet.
-				</div>
-			<% end %>
+			<%= render partial: "partials/posts", locals: {posts: @posts} %>
 		</div>
 	</div>
 </div>
