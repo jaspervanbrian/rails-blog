@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   # Users
   get 'sign_up', to: 'users#new'
   post 'sign_up', to: 'users#create'
-  resources :users, only: [:show, :update]
+  resources :users, only: [:show, :update] do
+    resources :posts, only: [:create]
+  end
 
   # Posts and comments
   resources :posts, :except => [:new] do

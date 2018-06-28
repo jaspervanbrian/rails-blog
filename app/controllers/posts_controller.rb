@@ -13,15 +13,25 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(posts_params)
-    user = User.find_by(id: session[:user_id])
-    unless user.nil?
-      user.posts << @post
+    @user = User.find_by(id: session[:user_id])
+    unless @user.nil?
+      @user.posts << @post
       if @post.valid?
         flash[:success] = "Successfully posted a content!"
-        redirect_to :action => 'index'
+        if params[:user_id].present?
+          redirect_to user_path(@user)
+        else
+          redirect_to :action => 'index'
+        end
       else
         flash.now[:error] = "Error posting content."
-        render :index
+        if params[:user_id].present?
+          flash.now[:error_user_post] = "error" # needed to determine which tab to open
+          @posts = @user.posts.latest.page(params[:page]) # needed because we're rendering
+          render "users/show"
+        else
+          render :index
+        end
       end
     else
       flash.now[:error] = "Error posting content."

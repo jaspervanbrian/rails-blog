@@ -45,7 +45,7 @@ class UsersController < ApplicationController
       end
     else
       flash.now[:error] = "Invalid password."
-        flash.now[:error_user_details] = "password"
+      flash.now[:error_user_details] = "password"
       render :show
     end
   end
