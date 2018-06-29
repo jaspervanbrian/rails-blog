@@ -54,10 +54,8 @@
 				</div>
 			<% end %>
 			<div class="list-group">
-				<% if @post.comments.length > 0 %>
-					<% @post.comments.each do |comment| %>
-						<%= render partial: "partials/comment", locals: {comment: comment} %>
-					<% end %>
+				<% unless @post.comments.empty? %>
+					<%= render partial: "partials/comment", collection: @post.comments, locals: {post: @post} %>
 				<% else %>
 					<div class="alert alert-info">No comments yet. Be the first to comment!</div>
 				<% end %>

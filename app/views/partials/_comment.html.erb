@@ -1,7 +1,18 @@
-<a href="#!" class="list-group-item list-group-item-action flex-column align-items-start">
+<div href="#!" class="list-group-item list-group-item-action flex-column align-items-start">
 	<div class="d-flex w-100 justify-content-between mb-4">
 		<h6 class="mb-1"><%= comment.user.full_name %></h6>
-		<small><%= time_ago_in_words(comment.created_at) %></small>
+		<small><%= time_ago_in_words(comment.created_at) %> ago</small>
 	</div>
+	<% if logged_in? %>
+		<% if @current_user.id === comment.user_id %>
+			<div class="float-right">
+				<%= form_with model: comment, method: :delete, url: post_comment_path(post, comment), class: 'form-horizontal needs-validation', html: {novalidate: true}, local: true do |form| %>
+					<%= form.button type: "submit", class: "btn btn-outline-dark" do %>
+						<%= icon("far", "trash-alt") %>
+					<% end %>
+				<% end %>
+			</div>
+		<% end %>
+	<% end %>
 	<p class="mb-1"><%= comment.body %></p>
-</a>
+</div>
