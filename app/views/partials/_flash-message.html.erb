@@ -2,9 +2,7 @@
 	<div class="alert alert-success flash-message" role="alert">
 		<%= flash[:success] %>
 	</div>
-<% end %>
-
-<% if flash[:error].present? %>
+<% elsif flash[:error].present? %>
 	<div class="alert alert-danger flash-message" role="alert">
 		<%= flash[:error] %>
 	</div>

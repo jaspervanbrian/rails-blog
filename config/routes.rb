@@ -11,6 +11,16 @@ Rails.application.routes.draw do
   get 'sign_up', to: 'users#new'
   post 'sign_up', to: 'users#create'
   resources :users, only: [:show, :update] do
+    member do
+      patch :update_photo_avatar
+      put :update_photo_avatar
+
+      patch :update_photo_banner
+      put :update_photo_banner
+
+      patch :update_password
+      put :update_password
+    end
     resources :posts, only: [:create]
   end
 

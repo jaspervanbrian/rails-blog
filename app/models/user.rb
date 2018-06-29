@@ -10,6 +10,8 @@ class User < ApplicationRecord
   validates :last_name, presence: true, length: { maximum: 50 }
   validates :password, length: { minimum: 8, maximum: 255 }, presence: true
   validates :email, presence: true, 'valid_email_2/email': true, length: { maximum: 255 }
+  validate :photo_avatar_validation
+  validate :photo_banner_validation
 
   before_save { self.email = email.downcase }
   before_save { self.first_name = first_name.capitalize }
@@ -52,4 +54,31 @@ class User < ApplicationRecord
   def full_name
     return self.first_name + " " + self.last_name
   end
+
+  private
+
+  def photo_avatar_validation
+    if profile_avatar.attached?
+      if profile_avatar.blob.byte_size > 1000000
+        profile_avatar.purge
+        errors[:profile_avatar] << 'Too big'
+      elsif !profile_avatar.blob.content_type.starts_with?('image')
+        profile_avatar.purge
+        errors[:profile_avatar] << 'Wrong format'
+      end
+    end
+  end
+
+  def photo_banner_validation
+    if profile_banner.attached?
+      if profile_banner.blob.byte_size > 1000000
+        profile_banner.purge
+        errors[:profile_banner] << 'Too big'
+      elsif !profile_banner.blob.content_type.starts_with?('image/')
+        profile_banner.purge
+        errors[:profile_banner] << 'Wrong format'
+      end
+    end
+  end
+
 end
