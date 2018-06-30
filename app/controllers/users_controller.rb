@@ -55,10 +55,15 @@ class UsersController < ApplicationController
     @posts = @user.posts.latest.page(params[:page])
     @post = Post.new
 
-    @user.profile_avatar.attach(user_params[:profile_avatar]) if user_params[:profile_avatar].present?
-    if @user.save(context: :update_profile_avatar)
-      flash[:success] = "Your profile avatar was successfully updated!"
-      redirect_to user_path(@user)
+    @user.profile_avatar.attach(user_params[:profile_avatar])
+    if @user.valid?(:update_profile_avatar)
+      if @user.save(context: :update_profile_avatar)
+        flash[:success] = "Your profile avatar was successfully updated!"
+        redirect_to user_path(@user)
+      else
+        flash.now[:error] = "There was error updating your profile avatar."
+        render :show
+      end
     else
       flash.now[:error] = "There was error updating your profile avatar."
       render :show
@@ -71,9 +76,14 @@ class UsersController < ApplicationController
     @post = Post.new
 
     @user.profile_banner.attach(user_params[:profile_banner])
-    if @user.save(context: :update_profile_banner)
-      flash[:success] = "Your profile banner was successfully updated!"
-      redirect_to user_path(@user)
+    if @user.valid?(:update_profile_banner)
+      if @user.save(context: :update_profile_banner)
+        flash[:success] = "Your profile banner was successfully updated!"
+        redirect_to user_path(@user)
+      else
+        flash.now[:error] = "There was error updating your profile banner."
+        render :show
+      end
     else
       flash.now[:error] = "There was error updating your profile banner."
       render :show
