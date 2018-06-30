@@ -1,7 +1,7 @@
 <% @title = "Register" %>
 
 <div class="card-body">
-	<%= form_with scope: :user, url: sign_up_path, model: @user, class: "form-signin form-horizontal needs-validation", html: {novalidate: true}, local: true do |form| %>
+	<%= form_with scope: :user, url: sign_up_path, model: @user, class: "form-signin form-horizontal needs-validation", local: true do |form| %>
 		<div class="d-flex justify-content-center">
 		  <%= link_to root_path, class: "align-self-center" do %>
 		    <%= image_tag("logos/logo.png") %>

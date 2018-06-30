@@ -4,20 +4,20 @@
 	<div class="row">
 		<div class="col-4">
 			<% if logged_in? %>
-				<%= form_with scope: :post, model: @post, class: 'form-horizontal needs-validation', html: {novalidate: true}, local: true do |form| %>
+				<%= form_with scope: :post, model: @post, class: 'form-horizontal needs-validation', local: true do |form| %>
 					<div class="card">
 						<div class="card-header">
 							<h6>What's on your mind <%= @current_user.first_name %>?</h6>
 						</div>
 						<div class="card-body">
-							<%= form.text_field :title, :class => "form-control #{ @post.errors.include?(:title) ? 'is-invalid' : ''}", :placeholder => 'Title of your post', maxlength: 50 %>
+							<%= form.text_field :title, :class => "form-control #{ @post.errors.include?(:title) ? 'is-invalid' : ''}", :placeholder => 'Title of your post', maxlength: 50, required: true%>
 							<% if @post.errors.include?(:title) %>
 								<div class="invalid-feedback">
 									<%= @post.errors[:title].join(", ").capitalize %>
 								</div>
 							<% end %>
 							<hr>
-							<%= form.text_area :body, :class => "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", :placeholder => 'Say something here!', :rows => 9 %>
+							<%= form.text_area :body, :class => "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", :placeholder => 'Say something here!', :rows => 9, required: true%>
 							<% if @post.errors.include?(:body) %>
 								<div class="invalid-feedback">
 									<%= @post.errors[:body].join(", ").capitalize %>

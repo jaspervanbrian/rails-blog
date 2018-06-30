@@ -67,9 +67,9 @@
 					<%= render partial: "partials/posts", locals: { posts: @posts } %>
 				</div>
 				<div class="tab-pane container fade" id="create">
-					<%= form_with scope: :post, model: @post, url: user_posts_path(@user), class: 'form-horizontal needs-validation', html: {novalidate: true}, local: true do |form| %>
+					<%= form_with scope: :post, model: @post, url: user_posts_path(@user), class: 'form-horizontal needs-validation', local: true do |form| %>
 						<div class="form-group">
-							<%= form.text_field :title, :class => "form-control #{ @post.errors.include?(:title) ? 'is-invalid' : ''}", :placeholder => 'Title of your post', maxlength: 50 %>
+							<%= form.text_field :title, :class => "form-control #{ @post.errors.include?(:title) ? 'is-invalid' : ''}", :placeholder => 'Title of your post', maxlength: 50, required: true %>
 							<% if @post.errors.include?(:title) %>
 								<div class="invalid-feedback">
 									<%= @post.errors[:title].join(", ").capitalize %>
@@ -77,7 +77,7 @@
 							<% end %>
 						</div>
 						<div class="form-group">
-							<%= form.text_area :body, :class => "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", :placeholder => 'Say something here!', :rows => 9 %>
+							<%= form.text_area :body, :class => "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", :placeholder => 'Say something here!', :rows => 9, required: true %>
 							<% if @post.errors.include?(:body) %>
 								<div class="invalid-feedback">
 									<%= @post.errors[:body].join(", ").capitalize %>
@@ -91,7 +91,7 @@
 					<% end %>
 				</div>
 				<div class="tab-pane container fade" id="editProfileDetails">
-					<%= form_with scope: :user, model: @user, class: 'form-horizontal needs-validation', html: {novalidate: true}, local: true do |form| %>
+					<%= form_with scope: :user, model: @user, class: 'form-horizontal needs-validation', local: true do |form| %>
 						<div class="form-group">
 							<div class="row">
 								<div class="col-6">
@@ -139,23 +139,13 @@
 					<% end %>
 				</div>
 				<div class="tab-pane container fade" id="editProfilePhotos">
-					<%= form_with scope: :user, model: @user, url: update_photo_avatar_user_path(@user), class: 'form-horizontal needs-validation', html: {novalidate: true}, local: true do |form| %>
+					<%= form_with scope: :user, model: @user, url: update_photo_avatar_user_path(@user), class: 'form-horizontal needs-validation', local: true do |form| %>
 						<div class="form-group">
 							<%= form.label :profile_avatar %>
-							<%= form.hidden_field :profile_avatar %>
-							<%= form.file_field :profile_avatar, class: "form-control #{ @user.errors.include?(:profile_avatar) ? 'is-invalid' : '' }",required: true %>
+							<%= form.file_field :profile_avatar, class: "form-control #{ @user.errors.include?(:profile_avatar) ? 'is-invalid' : '' }", required: true %>
 							<% if @user.errors.include?(:profile_avatar) %>
 								<div class="invalid-feedback">
 									<%= @user.errors[:profile_avatar].join(", ").capitalize %>
-								</div>
-							<% end %>
-						</div>
-						<div class="form-group">
-							<%= form.label "Enter password to confirm" %>
-							<%= form.password_field :password, class: "form-control #{ @user.errors.include?(:password) || flash[:error_user_avatar].present? ? 'is-invalid' : ''}", placeholder: "Your password", required: true %>
-							<% if @user.errors.include?(:password) || flash[:error_user_avatar].present? %>
-								<div class="invalid-feedback">
-									<%= flash[:error_user_avatar] %>
 								</div>
 							<% end %>
 						</div>
@@ -164,23 +154,13 @@
 						</div>
 					<% end %>
 					<hr>
-					<%= form_with scope: :user, model: @user, url: update_photo_banner_user_path(@user), class: 'form-horizontal needs-validation', html: {novalidate: true}, local: true do |form| %>
+					<%= form_with scope: :user, model: @user, url: update_photo_banner_user_path(@user), class: 'form-horizontal needs-validation', local: true do |form| %>
 						<div class="form-group">
-							<%= form.label :profile_banner %>
-							<%= form.hidden_field :profile_banner %>
-							<%= form.file_field :profile_banner, class: "form-control #{ @user.errors.include?(:profile_banner) ? 'is-invalid' : '' }",required: true %>
+							<%= form.label :profile_banner %> 
+							<%= form.file_field :profile_banner, class: "form-control #{ @user.errors.include?(:profile_banner) ? 'is-invalid' : '' }", required: true %>
 							<% if @user.errors.include?(:profile_banner) %>
 								<div class="invalid-feedback">
 									<%= @user.errors[:profile_banner].join(", ").capitalize %>
-								</div>
-							<% end %>
-						</div>
-						<div class="form-group">
-							<%= form.label "Enter password to confirm" %>
-							<%= form.password_field :password, class: "form-control #{ @user.errors.include?(:password) || flash[:error_user_banner].present? ? 'is-invalid' : ''}", placeholder: "Your password", required: true %>
-							<% if @user.errors.include?(:password) || flash[:error_user_banner].present? %>
-								<div class="invalid-feedback">
-									<%= flash[:error_user_banner] %>
 								</div>
 							<% end %>
 						</div>
@@ -190,7 +170,7 @@
 					<% end %>
 				</div>
 				<div class="tab-pane container fade" id="editProfilePassword">
-					<%= form_with scope: :user, model: @user, url: update_password_user_path(@user), class: 'form-horizontal needs-validation', html: {novalidate: true}, local: true do |form| %>
+					<%= form_with scope: :user, model: @user, url: update_password_user_path(@user), class: 'form-horizontal needs-validation', local: true do |form| %>
 						<div class="form-group">
 							<%= form.label "Current Password" %>
 							<%= form.password_field :old_password, class: "form-control #{ @user.errors.include?(:old_password) || flash[:error_user_password].present? ? 'is-invalid' : ''}", placeholder: "Your current password", required: true %>
@@ -240,7 +220,7 @@
 			$("#editProfileDetailsTab").tab('show');
 		});
 	</script>
-<% elsif @user.errors.include?(:password) && (flash[:error_user_avatar].present? || flash[:error_user_banner].present?) %>
+<% elsif (@user.errors.include?(:profile_avatar) || @user.errors.include?(:profile_banner)) %>
 	<script>
 		$(document).ready(function() {
 			$("#editProfilePhotosTab").tab('show');

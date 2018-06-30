@@ -23,7 +23,7 @@
 					</div>
 					<hr class="mt-4 mb-4">
 					<p class="mb-1">
-						<%= p.text_area :body, rows: 10, class: "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", placeholder: "Say something..." %>
+						<%= p.text_area :body, rows: 10, class: "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", placeholder: "Say something...", required: true %>
 						<% if @post.errors.include?(:body) %>
 							<div class="invalid-feedback">
 								<%= @post.errors[:body].join(", ").capitalize %>

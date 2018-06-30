@@ -6,16 +6,20 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
 
-  validates :first_name, presence: true, length: { maximum: 50 }
-  validates :last_name, presence: true, length: { maximum: 50 }
-  validates :password, length: { minimum: 8, maximum: 255 }, presence: true
-  validates :email, presence: true, 'valid_email_2/email': true, length: { maximum: 255 }
-  validate :photo_avatar_validation
-  validate :photo_banner_validation
+  with_options presence: true do |user|
+    user.with_options length: { maximum: 50 } do |user|
+      user.validates :first_name
+      user.validates :last_name
+    end
+    user.validates :email, 'valid_email_2/email': true, length: { maximum: 255 }
+  end
+  validates :password, length: { minimum: 8, maximum: 255 }, presence: true, on: [:update, :update_password]
+  validate :photo_avatar_validation, on: :update_profile_avatar
+  validate :photo_banner_validation, on: :update_profile_banner
 
-  before_save { self.email = email.downcase }
-  before_save { self.first_name = first_name.capitalize }
-  before_save { self.last_name = last_name.capitalize }
+  before_save { self.email = self.email.downcase }
+  before_save { self.first_name = self.first_name.capitalize }
+  before_save { self.last_name = self.last_name.capitalize }
 
   has_secure_password
   # attr_reader :password
@@ -66,6 +70,8 @@ class User < ApplicationRecord
         profile_avatar.purge
         errors[:profile_avatar] << 'Wrong format'
       end
+    else
+      errors[:profile_avatar] << 'No file attached'
     end
   end
 
@@ -78,6 +84,8 @@ class User < ApplicationRecord
         profile_banner.purge
         errors[:profile_banner] << 'Wrong format'
       end
+    else
+      errors[:profile_banner] << 'No file attached'
     end
   end
 

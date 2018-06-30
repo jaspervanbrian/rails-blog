@@ -51,53 +51,31 @@ class UsersController < ApplicationController
   end
 
   def update_photo_avatar
-    authorized = false
     @user = User.find_by(id: params[:id])
     @posts = @user.posts.latest.page(params[:page])
     @post = Post.new
 
-    if params[:password].present?
-      authorized = user.authenticate(params[:password])
-    end
-
-    if authorized
-      if @user.update_attributes(user_params)
-        flash[:success] = "Your profile avatar was successfully updated!"
-        redirect_to user_path(@user)
-      else
-        flash.now[:error] = "There was error updating your profile avatar."
-        flash.now[:error_user_avatar] = "Invalid password."
-        render :show
-      end
+    @user.profile_avatar.attach(user_params[:profile_avatar]) if user_params[:profile_avatar].present?
+    if @user.save(context: :update_profile_avatar)
+      flash[:success] = "Your profile avatar was successfully updated!"
+      redirect_to user_path(@user)
     else
       flash.now[:error] = "There was error updating your profile avatar."
-      flash.now[:error_user_avatar] = "Invalid password."
       render :show
     end
   end
 
   def update_photo_banner
-    authorized = false
     @user = User.find_by(id: params[:id])
     @posts = @user.posts.latest.page(params[:page])
     @post = Post.new
 
-    if params[:password].present?
-      authorized = user.authenticate(params[:password])
-    end
-
-    if authorized
-      if @user.update_attributes(user_params)
-        flash[:success] = "Your profile banner was successfully updated!"
-        redirect_to user_path(@user)
-      else
-        flash.now[:error] = "There was error updating your profile banner."
-        flash.now[:error_user_banner] = "Invalid password."
-        render :show
-      end
+    @user.profile_banner.attach(user_params[:profile_banner])
+    if @user.save(context: :update_profile_banner)
+      flash[:success] = "Your profile banner was successfully updated!"
+      redirect_to user_path(@user)
     else
       flash.now[:error] = "There was error updating your profile banner."
-      flash.now[:error_user_banner] = "Invalid password."
       render :show
     end
   end
@@ -108,8 +86,8 @@ class UsersController < ApplicationController
     @posts = @user.posts.latest.page(params[:page])
     @post = Post.new
 
-    if params[:old_password].present? && params[:password].present? && params[:password_confirmation].present?
-      authorized = user.authenticate(params[:old_password])
+    if params[:user][:old_password].present? && params[:user][:password].present? && params[:user][:password_confirmation].present?
+      authorized = @user.authenticate(params[:user][:old_password])
     end
 
     if authorized

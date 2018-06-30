@@ -37,7 +37,7 @@
 				<div class="form-group">
 					<%= form_with url: post_comments_path(@post), local: true do |form| %>
 						<div class="input-group">
-							<%= form.text_field :body, class: "form-control", placeholder: "Say something..." %>
+							<%= form.text_field :body, class: "form-control", placeholder: "Say something...", required: true %>
 							<div class="input-group-append">
 								<%= form.submit "Reply", class: "btn btn-danger" %>
 							</div>
