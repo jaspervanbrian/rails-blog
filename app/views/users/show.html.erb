@@ -18,22 +18,20 @@
 					</div>
 					<div class="avatarcontainer">
 						<% if @user.profile_avatar.attached? %>
-							<%= image_tag @user.profile_avatar, class: "avatar", width: "100%" %>
+							<%= image_tag @user.profile_avatar, class: "rounded-circle avatar" %>
 						<% else %>
-							<%= image_tag "profile_avatars/default.png", class: "avatar", width: "100%" %>
+							<%= image_tag "profile_avatars/default.png", class: "rounded-circle avatar" %>
 						<% end %>
 					</div>
 				</header>
-				<div class="content">
-					<div class="data">
-						<ul>
-							<li>
-								<%= @posts.length %>
-								<span>Posts</span>
-							</li>
-							<li><%= @user.full_name %></li>
-						</ul>
-					</div>
+				<div class="data">
+					<ul>
+						<li>
+							<%= @posts.length %>
+							<span>Posts</span>
+						</li>
+						<li><%= @user.full_name %></li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -83,6 +81,20 @@
 									<%= @post.errors[:body].join(", ").capitalize %>
 								</div>
 							<% end %>
+						</div>
+						<div class="form-group">
+							<p class="text-muted">Add photos</p>
+							<div class="custom-file">
+								<%= form.file_field :images, multiple: true, class: "custom-file-input #{ @post.errors.include?(:images) ? 'is-invalid' : '' }" %>
+								<%= form.label :images, class: "custom-file-label" do %>
+								No photo(s) selected.
+								<% end %>
+								<% if @post.errors.include?(:images) %>
+								<div class="invalid-feedback">
+									<%= @post.errors[:images].join(", ").capitalize %>
+								</div>
+								<% end %>
+							</div>
 						</div>
 						<hr>
 						<div class="form-group">
@@ -143,7 +155,9 @@
 						<div class="form-group">
 							<div class="custom-file">
 								<%= form.file_field :profile_avatar, class: "custom-file-input #{ @user.errors.include?(:profile_avatar) ? 'is-invalid' : '' }", required: true %>
-								<%= form.label :profile_avatar, class: "custom-file-label" %>
+								<%= form.label :profile_avatar, class: "custom-file-label" do %>
+									No photo selected.
+								<% end %>
 								<% if @user.errors.include?(:profile_avatar) %>
 									<div class="invalid-feedback">
 										<%= @user.errors[:profile_avatar].join(", ").capitalize %>
@@ -160,7 +174,9 @@
 						<div class="form-group">
 							<div class="custom-file">
 								<%= form.file_field :profile_banner, class: "custom-file-input #{ @user.errors.include?(:profile_banner) ? 'is-invalid' : '' }", required: true %>
-								<%= form.label :profile_banner, class: "custom-file-label" %>
+								<%= form.label :profile_banner, class: "custom-file-label" do %>
+									No photo selected.
+								<% end %>
 								<% if @user.errors.include?(:profile_banner) %>
 									<div class="invalid-feedback">
 										<%= @user.errors[:profile_banner].join(", ").capitalize %>

@@ -20,7 +20,7 @@ class AuthenticationController < ApplicationController
     if authorized # checks if user is already authorized
       helpers.log_in authorized
       params[:remember_me] == '1' ? helpers.remember(authorized) : helpers.forget(authorized)
-      redirect_to root_path
+      redirect_back(fallback_location: root_path) # Goes back to HTTP referrer. If HTTP_REFERER is not present, fallback_location is used.
     else
       flash.now[:error] = "Invalid login credentials."
       render :login

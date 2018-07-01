@@ -1,8 +1,8 @@
 class User < ApplicationRecord
   attr_accessor :remember_token
 
-  has_one_attached :profile_avatar
-  has_one_attached :profile_banner
+  has_one_attached :profile_avatar, dependent: :destroy
+  has_one_attached :profile_banner, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
 
@@ -63,12 +63,12 @@ class User < ApplicationRecord
 
   def photo_avatar_validation
     if profile_avatar.attached?
-      if profile_avatar.blob.byte_size > 1000000
+      if profile_avatar.blob.byte_size > 5000000
         profile_avatar.purge
-        errors[:profile_avatar] << 'Too big'
+        errors[:profile_avatar] << 'Too big.'
       elsif !profile_avatar.blob.content_type.starts_with?('image')
         profile_avatar.purge
-        errors[:profile_avatar] << 'Wrong format'
+        errors[:profile_avatar] << 'Invalid photo format.'
       end
     else
       errors[:profile_avatar] << 'No file attached'
@@ -77,12 +77,12 @@ class User < ApplicationRecord
 
   def photo_banner_validation
     if profile_banner.attached?
-      if profile_banner.blob.byte_size > 1000000
+      if profile_banner.blob.byte_size > 5000000
         profile_banner.purge
-        errors[:profile_banner] << 'Too big'
+        errors[:profile_banner] << 'Too big.'
       elsif !profile_banner.blob.content_type.starts_with?('image/')
         profile_banner.purge
-        errors[:profile_banner] << 'Wrong format'
+        errors[:profile_banner] << 'Invalid photo format.'
       end
     else
       errors[:profile_banner] << 'No file attached'

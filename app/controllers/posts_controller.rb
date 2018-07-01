@@ -9,6 +9,9 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find_by(id: params[:id])
+    if @post.images.present?
+      @images = @post.images
+    end
   end
 
   def create
@@ -18,14 +21,14 @@ class PostsController < ApplicationController
       @user.posts << @post
       if @post.valid?
         flash[:success] = "Successfully posted a content!"
-        if params[:user_id].present?
+        if params[:user_id].present? # if request came from profile page
           redirect_to user_path(@user)
         else
           redirect_to :action => 'index'
         end
       else
         flash.now[:error] = "Error posting content."
-        if params[:user_id].present?
+        if params[:user_id].present? # if request came from profile page
           flash.now[:error_user_post] = "error" # needed to determine which tab to open
           @posts = @user.posts.latest.page(params[:page]) # needed because we're rendering
           render "users/show"

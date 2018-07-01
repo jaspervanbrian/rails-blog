@@ -27,6 +27,11 @@
 				<p class="mb-1">
 					<%= simple_format(h(@post.body)) %>
 				</p>
+				<% if @images.present? %>
+					<% @images.each do |image| %>
+						<%= image_tag image, class: "img-thumbnail" %>
+					<% end %>
+				<% end %>
 			</div>
 		</div>
 	</div>

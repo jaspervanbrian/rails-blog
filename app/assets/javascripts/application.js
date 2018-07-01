@@ -24,4 +24,12 @@
 
 $(document).ready(function() {
 	$(".flash-message").delay(3000).slideUp(1000);
+	$(':file').on('change', function() {
+		var filename = $(this).val();
+		if (filename.length) {
+			$(this).closest(".custom-file").find("label").text(filename);
+		} else {
+			$(this).closest(".custom-file").find("label").text("No photo selected.");
+		}
+	});
 });

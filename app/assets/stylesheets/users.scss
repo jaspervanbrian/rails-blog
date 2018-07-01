@@ -2,6 +2,14 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.profile-link { 
+  text-decoration: none !important;
+  color: #ff4000;
+}
+.profile-link:hover {
+  color: #992600;
+} 
+
 header {
   display: block;
   overflow: hidden;
@@ -29,7 +37,7 @@ header {
     box-shadow: #bdc3c7 0 5px 5px;
 }
 .bg {
-  border-bottom: 8px solid #5cc0ff; }
+  border-bottom: 8px solid  #999999; }
 
 .bio:hover > .desc {
   cursor: pointer;
@@ -48,8 +56,9 @@ header {
     opacity: 1; }
 
 .avatar {
+  height: 100%;
   width: 100%;
-  border: 8px solid #5cc0ff;
+  border: 8px solid  #999999;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
@@ -78,7 +87,7 @@ header {
   opacity: 0;
   font-family: 'FontAwesome';
   font-weight: 300;
-  border: 8px solid #5cc0ff;
+  border: 8px solid  #999999;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;

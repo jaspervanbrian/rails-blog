@@ -9,21 +9,38 @@
 						<div class="card-header">
 							<h6>What's on your mind <%= @current_user.first_name %>?</h6>
 						</div>
-						<div class="card-body">
-							<%= form.text_field :title, :class => "form-control #{ @post.errors.include?(:title) ? 'is-invalid' : ''}", :placeholder => 'Title of your post', maxlength: 50, required: true%>
-							<% if @post.errors.include?(:title) %>
-								<div class="invalid-feedback">
-									<%= @post.errors[:title].join(", ").capitalize %>
-								</div>
-							<% end %>
-							<hr>
-							<%= form.text_area :body, :class => "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", :placeholder => 'Say something here!', :rows => 9, required: true%>
-							<% if @post.errors.include?(:body) %>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">
+								<%= form.text_field :title, :class => "form-control #{ @post.errors.include?(:title) ? 'is-invalid' : ''}", :placeholder => 'Title of your post', maxlength: 50, required: true%>
+								<% if @post.errors.include?(:title) %>
+									<div class="invalid-feedback">
+										<%= @post.errors[:title].join(", ").capitalize %>
+									</div>
+								<% end %>
+							</li>
+							<li class="list-group-item">
+								<%= form.text_area :body, :class => "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", :placeholder => 'Say something here!', :rows => 9, required: true%>
+								<% if @post.errors.include?(:body) %>
 								<div class="invalid-feedback">
 									<%= @post.errors[:body].join(", ").capitalize %>
 								</div>
-							<% end %>
-						</div>
+								<% end %>
+							</li>
+							<li class="list-group-item">
+								<p class="text-muted">Add photos</p>
+								<div class="custom-file">
+									<%= form.file_field :images, multiple: true, class: "custom-file-input #{ @post.errors.include?(:images) ? 'is-invalid' : '' }" %>
+									<%= form.label :images, class: "custom-file-label" do %>
+										No photo(s) selected.
+									<% end %>
+									<% if @post.errors.include?(:images) %>
+										<div class="invalid-feedback">
+											<%= @post.errors[:images].join(", ").capitalize %>
+										</div>
+									<% end %>
+								</div>
+							</li>
+						</ul>
 						<div class="card-footer">
 							<%= form.submit "Post", :class => 'btn btn-danger float-right' %>
 						</div>

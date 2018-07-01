@@ -1,8 +1,6 @@
 <% if posts.length > 0 %>
 	<div class="list-group">
-		<div style="height: 75vh !important; overflow-y: scroll;">
-			<%= render partial: "partials/post", collection: posts %>
-		</div>
+		<%= render partial: "partials/post", collection: posts %>
 	</div>
 	<%= paginate posts, window: 3 %>
 <% else %>
