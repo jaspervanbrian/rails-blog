@@ -6,6 +6,10 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
 
+  # Messages
+  has_many :messages
+  has_many :conversations
+
   with_options presence: true do |user|
     user.with_options length: { maximum: 50 } do |user|
       user.validates :first_name
