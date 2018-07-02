@@ -27,6 +27,10 @@ Rails.application.routes.draw do
   # Posts and comments
   resources :posts, :except => [:new] do
     resources :comments, only: [:create, :destroy]
+
+    member do
+      delete :delete_image_attachment
+    end
   end
 
 end

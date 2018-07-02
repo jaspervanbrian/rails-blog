@@ -27,7 +27,7 @@
 								<% end %>
 							</li>
 							<li class="list-group-item">
-								<p class="text-muted">Add photos</p>
+								<small class="text-muted">Add photos</small>
 								<div class="custom-file">
 									<%= form.file_field :images, multiple: true, class: "custom-file-input #{ @post.errors.include?(:images) ? 'is-invalid' : '' }" %>
 									<%= form.label :images, class: "custom-file-label" do %>
