@@ -1,15 +1,7 @@
 <div class="card mb-4">
 	<div class="card-body">
 		<h6 class="card-title mb-4">
-			<% user = post.user %>
-			<% if user.profile_avatar.attached? %>
-				<%= image_tag user.profile_avatar, class: "rounded-circle float-left mr-2", size:"40x40" %>
-			<% else %>
-				<%= image_tag "profile_avatars/default.png", class: "rounded-circle float-left mr-2", size:"40x40" %>
-			<% end %>
-			<%= link_to user_path(user), class: "profile-link font-weight-bold" do %>
-				<%= user.full_name %>
-			<% end %>
+			<%= render partial: "partials/profile-partial", locals: {user: post.user} %>
 			<p>
 				<small class="text-muted"><%= time_ago_in_words(post.created_at) + " ago" %></small>
 			</p>

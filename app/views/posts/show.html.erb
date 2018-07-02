@@ -13,7 +13,7 @@
 						<% if logged_in? %>
 							<% if @current_user.id === @post.user_id %>
 								<div class="float-right">
-									<%= link_to icon('fas', 'edit'), edit_post_path, class: "btn btn-outline-danger mr-4" %>
+									<%= link_to icon('fas', 'edit'), edit_post_path(@post), class: "btn btn-outline-danger mr-4" %>
 									<button type="button" class="btn btn-outline-dark float-right" data-toggle="modal" data-target="#deleteModal"><%= icon('far', 'trash-alt') %></button>
 								</div>
 							<% end %>
@@ -28,27 +28,47 @@
 					<%= simple_format(h(@post.body)) %>
 				</p>
 				<% if @images.present? %>
-						<% @images.each do |image| %>
-							<%= image_tag image, class: "img-thumbnail m-2" %>
-						<% end %>
+					<% @images.each do |image| %>
+						<%= image_tag image, class: "img-thumbnail m-2" %>
+					<% end %>
 				<% end %>
 			</div>
 		</div>
 	</div>
-	<hr>
-	<div class="row">
+	<div class="row my-4">
 		<div class="col-10">
 			<% if logged_in? %>
-				<div class="form-group">
-					<%= form_with url: post_comments_path(@post), local: true do |form| %>
-						<div class="input-group">
-							<%= form.text_field :body, class: "form-control", placeholder: "Say something...", required: true %>
-							<div class="input-group-append">
-								<%= form.submit "Reply", class: "btn btn-danger" %>
+				<%= form_with scope: :comment, model: @comment, url: post_comments_path(@post), local: true do |form| %>
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="form-group">
+								<%= form.text_area :body, class: "form-control #{ @comment.errors.include?(:body) ? 'is-invalid' : '' }", placeholder: "What are your thoughts for this post?", required: true, rows: 5 %>
+								<% if @comment.errors.include?(:body) %>
+									<div class="invalid-feedback">
+										<%= @comment.errors[:body].join(", ").capitalize %>
+									</div>
+								<% end %>
+							</div>
+							<div class="form-group">
+								<small class="text-muted">Add photos</small>
+								<div class="custom-file">
+									<%= form.file_field :images, multiple: true, class: "custom-file-input #{ @comment.errors.include?(:images) ? 'is-invalid' : '' }" %>
+									<%= form.label :images, class: "custom-file-label" do %>
+										No photo(s) selected.
+									<% end %>
+									<% if @comment.errors.include?(:images) %>
+										<div class="invalid-feedback">
+											<%= @comment.errors[:images].join(", ").capitalize %>
+										</div>
+									<% end %>
+								</div>
 							</div>
 						</div>
-					<% end %>
-				</div>
+						<div class="card-footer">
+							<%= form.submit "Reply", class: "btn btn-danger" %>
+						</div>
+					</div>
+				<% end %>
 			<% else %>
 				<div class="form-group">
 					<div class="card">
@@ -58,6 +78,8 @@
 					</div>
 				</div>
 			<% end %>
+			<h6 class="font-weight-bold">All comments</h6>
+			<hr>
 			<div class="list-group">
 				<% unless @post.comments.empty? %>
 					<%= render partial: "partials/comment", collection: @post.comments, locals: {post: @post} %>

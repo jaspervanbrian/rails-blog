@@ -1,18 +1,27 @@
 <div href="#!" class="list-group-item list-group-item-action flex-column align-items-start">
-	<div class="d-flex w-100 justify-content-between mb-4">
-		<h6 class="mb-1"><%= comment.user.full_name %></h6>
-		<small><%= time_ago_in_words(comment.created_at) %> ago</small>
-	</div>
-	<% if logged_in? %>
-		<% if @current_user.id === comment.user_id %>
-			<div class="float-right">
-				<%= form_with model: comment, method: :delete, url: post_comment_path(post, comment), class: 'form-horizontal needs-validation', local: true do |form| %>
-					<%= form.button type: "submit", class: "btn btn-outline-dark" do %>
-						<%= icon("far", "trash-alt") %>
+	<div class="d-flex w-100 justify-content-between mb-4 mt-1">
+		<h6>
+			<%= render partial: "partials/profile-partial", locals: {user: comment.user} %>
+			<p>
+				<small class="text-muted"><%= time_ago_in_words(comment.created_at) + " ago" %></small>
+			</p>
+		</h6>
+		<% if logged_in? %>
+			<% if @current_user.id === comment.user_id %>
+				<div class="float-right">
+					<%= form_with model: comment, method: :delete, url: post_comment_path(post, comment), class: 'form-horizontal needs-validation', local: true, data: {confirm: "Are you sure you want to delete this comment?"} do |form| %>
+						<%= form.button type: "submit", class: "btn btn-outline-dark" do %>
+							<%= icon("far", "trash-alt") %>
+						<% end %>
 					<% end %>
-				<% end %>
-			</div>
+				</div>
+			<% end %>
+		<% end %>
+	</div>
+	<p class="mb-1"><%= comment.body %></p>
+	<% if comment.images.attached? %>
+		<% comment.images.each do |image| %>
+			<%= image_tag image, class: "img-thumbnail m-2" %>
 		<% end %>
 	<% end %>
-	<p class="mb-1"><%= comment.body %></p>
 </div>

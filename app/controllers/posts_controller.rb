@@ -12,6 +12,7 @@ class PostsController < ApplicationController
     if @post.images.present?
       @images = @post.images
     end
+    @comment = Comment.new
   end
 
   def create
@@ -51,9 +52,18 @@ class PostsController < ApplicationController
 
   def update
     @post = Post.find_by(id: params[:id])
-    if @post.update_attributes(posts_params)
-      flash[:success] = "Successfully updated the post!"
-      redirect_to action: 'show'
+    if @post.images.present?
+      @images = @post.images
+    end
+
+    if @post.valid?
+      if @post.update_attributes(posts_params)
+        flash[:success] = "Successfully updated the post!"
+        redirect_to action: 'show'
+      else
+        flash.now[:error] = "Error updating the post."
+        render :edit
+      end
     else
       flash.now[:error] = "Error updating the post."
       render :edit
