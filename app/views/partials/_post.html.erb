@@ -1,16 +1,22 @@
 <div class="card mb-4">
 	<div class="card-body">
-		<h5 class="card-title mb-4">
-			<% if post.user.profile_avatar.attached? %>
-				<%= image_tag post.user.profile_avatar, class: "rounded-circle", size:"50x50" %>
+		<h6 class="card-title mb-4">
+			<% user = post.user %>
+			<% if user.profile_avatar.attached? %>
+				<%= image_tag user.profile_avatar, class: "rounded-circle float-left mr-2", size:"40x40" %>
 			<% else %>
-				<%= image_tag "profile_avatars/default.png", class: "rounded-circle", size:"50x50" %>
+				<%= image_tag "profile_avatars/default.png", class: "rounded-circle float-left mr-2", size:"40x40" %>
 			<% end %>
-			<%= link_to user_path(post.user), class: "profile-link font-weight-bold" do %>
-				<%= post.user.full_name %>
+			<%= link_to user_path(user), class: "profile-link font-weight-bold" do %>
+				<%= user.full_name %>
 			<% end %>
-		</h5>
-		<h6 class="font-weight-bold"><%= post.title %></h6>
+			<p>
+				<small class="text-muted"><%= time_ago_in_words(post.created_at) + " ago" %></small>
+			</p>
+		</h6>
+		<div class="d-flex justify-content-center">
+			<h6 class="font-weight-bold"><%= post.title %></h6>
+		</div>
 		<hr>
 		<p class="card-text mb-1">
 			<%= simple_format(truncate(post.body, length: 100)) %>
@@ -20,7 +26,6 @@
 		<% end %>
 	</div>
 	<div class="card-footer">
-		<%= link_to("Read more...", post_path(post) , class: "btn btn-outline-dark") %>
-		<small class="text-muted float-right"><%= time_ago_in_words(post.created_at) + " ago" %></small>
+		<%= link_to("Read more...", post_path(post) , class: "btn btn-outline-dark float-right") %>
 	</div>
 </div>

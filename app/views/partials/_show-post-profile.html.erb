@@ -1,0 +1,13 @@
+<div class="my-4">
+	<% if user.profile_avatar.attached? %>
+		<%= image_tag user.profile_avatar, class: "rounded-circle float-left mr-2", size:"50x50" %>
+	<% else %>
+		<%= image_tag "profile_avatars/default.png", class: "rounded-circle float-left mr-2", size:"50x50" %>
+	<% end %>
+	<%= link_to user_path(user), class: "profile-link font-weight-bold" do %>
+		<%= user.full_name %>
+	<% end %>
+	<p class="text-nowrap">
+		<small class="text-muted"><%= post_created_at.strftime("%B %d, %Y | %A, %l:%M %p") %></small>
+	</p>
+</div>
