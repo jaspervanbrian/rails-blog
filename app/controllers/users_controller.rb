@@ -1,10 +1,8 @@
 class UsersController < ApplicationController
   layout "authentication", only: [:new, :create]
+  before_action :vars_init, except: [:new, :create]
 
-  def show
-    @user = User.find_by(id: params[:id])
-    @posts = @user.posts.latest.page(params[:page])
-    @post = Post.new
+  def showd
   end
 
   def new
@@ -26,9 +24,6 @@ class UsersController < ApplicationController
 
   def update
     authorized = false
-    @user = User.find_by(id: params[:id])
-    @posts = @user.posts.latest.page(params[:page])
-    @post = Post.new
 
     if params[:password].present?
       authorized = user.authenticate(params[:password])
@@ -51,9 +46,6 @@ class UsersController < ApplicationController
   end
 
   def update_photo_avatar
-    @user = User.find_by(id: params[:id])
-    @posts = @user.posts.latest.page(params[:page])
-    @post = Post.new
 
     @user.profile_avatar.attach(user_params[:profile_avatar])
     if @user.valid?(:update_profile_avatar)
@@ -71,9 +63,6 @@ class UsersController < ApplicationController
   end
 
   def update_photo_banner
-    @user = User.find_by(id: params[:id])
-    @posts = @user.posts.latest.page(params[:page])
-    @post = Post.new
 
     @user.profile_banner.attach(user_params[:profile_banner])
     if @user.valid?(:update_profile_banner)
@@ -92,9 +81,6 @@ class UsersController < ApplicationController
 
   def update_password
     authorized = false
-    @user = User.find_by(id: params[:id])
-    @posts = @user.posts.latest.page(params[:page])
-    @post = Post.new
 
     if params[:user][:old_password].present? && params[:user][:password].present? && params[:user][:password_confirmation].present?
       authorized = @user.authenticate(params[:user][:old_password])
@@ -124,6 +110,22 @@ class UsersController < ApplicationController
 
 
   private
+
+  def vars_init
+    @user = User.find_by(id: params[:id])
+    @posts = @user.posts.latest.page(params[:page])
+    @post = Post.new
+    if helpers.logged_in?
+      @conversationsUsers = ConversationsUser.where(user_id: [@user.id, session[:user_id]])
+      @conversationsUsers.each do |conversationUser|
+        conversation = conversationUser.conversation
+        if conversation.name.nil? && (conversation.users.length === 2) # Checks if the conversation has only 2 users (You and your friend) and the default is no conversation name because it uses your friends name as convo name
+
+        end
+      end
+      @conversation = Conversation.new
+    end
+  end
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :profile_avatar, :profile_banner, :new_password)

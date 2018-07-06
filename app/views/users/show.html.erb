@@ -33,6 +33,11 @@
 						<li><%= @user.full_name %></li>
 					</ul>
 				</div>
+				<div class="form-group d-flex justify-content-center">
+					<%= link_to conversations_path, class: "btn btn-danger" do %>
+						<%= icon("fas", "envelope") %> Message
+					<% end %>
+				</div>
 			</div>
 		</div>
 		<div class="col-8">

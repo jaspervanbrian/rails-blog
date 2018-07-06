@@ -8,7 +8,8 @@ class User < ApplicationRecord
 
   # Messages
   has_many :messages
-  has_and_belongs_to_many :conversations
+  has_many :conversations_users
+  has_many :conversations, through: :conversations_users
 
   with_options presence: true do |user|
     user.with_options length: { maximum: 50 } do |user|
