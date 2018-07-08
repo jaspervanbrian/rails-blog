@@ -9,8 +9,8 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find_by(id: params[:id])
-    if @post.images.present?
-      @images = @post.images
+    if @post.attachments.present?
+      @attachments = @post.attachments
     end
     @comment = Comment.new
   end
@@ -45,15 +45,15 @@ class PostsController < ApplicationController
 
   def edit
     @post = Post.find_by(id: params[:id])
-    if @post.images.present?
-      @images = @post.images
+    if @post.attachments.present?
+      @attachments = @post.attachments
     end
   end
 
   def update
     @post = Post.find_by(id: params[:id])
-    if @post.images.present?
-      @images = @post.images
+    if @post.attachments.present?
+      @attachments = @post.attachments
     end
 
     if @post.valid?
@@ -87,7 +87,7 @@ class PostsController < ApplicationController
   private
 
   def posts_params
-    params.require(:post).permit(:title, :body, images: [])
+    params.require(:post).permit(:title, :body, attachments: [])
   end
 
   def get_posts

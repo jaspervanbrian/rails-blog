@@ -19,7 +19,7 @@
 								<% end %>
 							</li>
 							<li class="list-group-item">
-								<%= form.text_area :body, :class => "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", :placeholder => 'Say something here!', :rows => 9, required: true%>
+								<%= form.text_area :body, :class => "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", :placeholder => 'Say something here!', :rows => 9 %>
 								<% if @post.errors.include?(:body) %>
 								<div class="invalid-feedback">
 									<%= @post.errors[:body].join(", ").capitalize %>
@@ -27,15 +27,15 @@
 								<% end %>
 							</li>
 							<li class="list-group-item">
-								<small class="text-muted">Add photos</small>
+								<small class="text-muted">Add photos/videos</small>
 								<div class="custom-file">
-									<%= form.file_field :images, multiple: true, class: "custom-file-input #{ @post.errors.include?(:images) ? 'is-invalid' : '' }" %>
-									<%= form.label :images, class: "custom-file-label" do %>
-										No photo(s) selected.
+									<%= form.file_field :attachments, multiple: true, class: "custom-file-input #{ @post.errors.include?(:attachments) ? 'is-invalid' : '' }" %>
+									<%= form.label :attachments, class: "custom-file-label" do %>
+										No attachment selected.
 									<% end %>
-									<% if @post.errors.include?(:images) %>
+									<% if @post.errors.include?(:attachments) %>
 										<div class="invalid-feedback">
-											<%= @post.errors[:images].join(", ").capitalize %>
+											<%= @post.errors[:attachments].join(", ").capitalize %>
 										</div>
 									<% end %>
 								</div>

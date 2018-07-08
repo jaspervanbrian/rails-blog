@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   layout "authentication", only: [:new, :create]
   before_action :vars_init, except: [:new, :create]
 
-  def showd
+  def show
   end
 
   def new
@@ -116,14 +116,15 @@ class UsersController < ApplicationController
     @posts = @user.posts.latest.page(params[:page])
     @post = Post.new
     if helpers.logged_in?
+      @conversation = Conversation.new
       @conversationsUsers = ConversationsUser.where(user_id: [@user.id, session[:user_id]])
       @conversationsUsers.each do |conversationUser|
         conversation = conversationUser.conversation
-        if conversation.name.nil? && (conversation.users.length === 2) # Checks if the conversation has only 2 users (You and your friend) and the default is no conversation name because it uses your friends name as convo name
-
+        users = conversation.users # users of this conversation
+        if conversation.name.nil? && (users.length === 2) && ((users.include?(@user.id) && users.include?(session[:user_id]))) # Checks if the conversation has only 2 users (You and your friend) and the default is no conversation name because it uses your friends name as convo name
+          @conversation = conversation
         end
       end
-      @conversation = Conversation.new
     end
   end
 

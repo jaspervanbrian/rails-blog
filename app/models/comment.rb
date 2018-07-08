@@ -2,24 +2,33 @@ class Comment < ApplicationRecord
   belongs_to :post
   belongs_to :user
 
-  has_many_attached :images, dependent: :destroy
-
-  validates :body, presence: true
-  validate :images_type
+  has_many_attached :attachments, dependent: :destroy
+  
+  validate :content
+  validate :attachments_type
 
   private
+  
+  def content
+    if self.body.blank? && self.attachments.blank?
+      errors[:body] << "Comment must have content."
+      errors[:attachments] << "Comment must have content."
+    end
+  end
 
-  def images_type
-    if images.attached?
-      images.each do |image|
-        if image.blob.byte_size > 5000000
-          image.purge
-          errors[:images] << "Too big."
-        elsif !image.blob.content_type.starts_with?("image/")
-          image.purge
-          errors[:images] << "Invalid photo format."
+  def attachments_type
+    if attachments.attached?
+      attachments.each do |attachment|
+        content_type = attachment.blob.content_type
+        if attachment.blob.byte_size > 5000000
+          attachment.purge
+          errors[:attachments] << "Too big."
+        elsif !content_type.starts_with?("image/") && !content_type.starts_with?("video/")
+          attachment.purge
+          errors[:attachments] << "Invalid photo/video format."
         end
       end
     end
   end
+
 end

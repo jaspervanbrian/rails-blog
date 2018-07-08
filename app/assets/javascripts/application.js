@@ -29,7 +29,7 @@ $(document).ready(function() {
 		if (filename.length) {
 			$(this).closest(".custom-file").find("label").text(filename);
 		} else {
-			$(this).closest(".custom-file").find("label").text("No photo selected.");
+			$(this).closest(".custom-file").find("label").text("No attachment selected.");
 		}
 	});
 });

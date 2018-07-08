@@ -4,8 +4,8 @@ class CommentsController < ApplicationController
 
   def create
     @post = Post.find(params[:post_id])
-    if @post.images.present?
-      @images = @post.images
+    if @post.attachments.present?
+      @attachments = @post.attachments
     end
     user = User.find_by(id: session[:user_id])
 
@@ -42,7 +42,7 @@ class CommentsController < ApplicationController
   private
 
   def comments_params
-    params.require(:comment).permit(:body, images: [])
+    params.require(:comment).permit(:body, attachments: [])
   end
 
   def confirm_comment_ownership

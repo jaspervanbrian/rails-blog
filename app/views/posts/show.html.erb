@@ -27,9 +27,15 @@
 				<p class="mb-1">
 					<%= simple_format(h(@post.body)) %>
 				</p>
-				<% if @images.present? %>
-					<% @images.each do |image| %>
-						<%= image_tag image, class: "img-thumbnail m-2" %>
+				<% if @attachments.present? %>
+					<% @attachments.each do |attachment| %>
+						<% if attachment.content_type.starts_with?("image/") %>
+							<%= image_tag attachment, class: "img-thumbnail m-2" %>
+						<% elsif attachment.content_type.starts_with?("video/") %>
+							<div class="embed-responsive embed-responsive-16by9 m-2">
+								<%= video_tag(url_for(attachment), class: "embed-responsive-item", controls: "") %>
+							</div>
+						<% end %>
 					<% end %>
 				<% end %>
 			</div>
@@ -42,7 +48,7 @@
 					<div class="card mb-4">
 						<div class="card-body">
 							<div class="form-group">
-								<%= form.text_area :body, class: "form-control #{ @comment.errors.include?(:body) ? 'is-invalid' : '' }", placeholder: "What are your thoughts for this post?", required: true, rows: 5 %>
+								<%= form.text_area :body, class: "form-control #{ @comment.errors.include?(:body) ? 'is-invalid' : '' }", placeholder: "What are your thoughts for this post?", rows: 5 %>
 								<% if @comment.errors.include?(:body) %>
 									<div class="invalid-feedback">
 										<%= @comment.errors[:body].join(", ").capitalize %>
@@ -50,15 +56,15 @@
 								<% end %>
 							</div>
 							<div class="form-group">
-								<small class="text-muted">Add photos</small>
+								<small class="text-muted">Add photos/videos</small>
 								<div class="custom-file">
-									<%= form.file_field :images, multiple: true, class: "custom-file-input #{ @comment.errors.include?(:images) ? 'is-invalid' : '' }" %>
-									<%= form.label :images, class: "custom-file-label" do %>
-										No photo(s) selected.
+									<%= form.file_field :attachments, multiple: true, class: "custom-file-input #{ @comment.errors.include?(:attachments) ? 'is-invalid' : '' }" %>
+									<%= form.label :attachments, class: "custom-file-label" do %>
+										No attachment selected.
 									<% end %>
-									<% if @comment.errors.include?(:images) %>
+									<% if @comment.errors.include?(:attachments) %>
 										<div class="invalid-feedback">
-											<%= @comment.errors[:images].join(", ").capitalize %>
+											<%= @comment.errors[:attachments].join(", ").capitalize %>
 										</div>
 									<% end %>
 								</div>
