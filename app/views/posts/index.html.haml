@@ -1,0 +1,44 @@
+- @title = "All Posts"
+.container-fluid
+  .row
+    .col-4
+      - if logged_in?
+        = form_with scope: :post, model: @post, class: 'form-horizontal needs-validation', local: true do |form|
+          .card
+            .card-header
+              %h6
+                What's on your mind #{@current_user.first_name}?
+            %ul.list-group.list-group-flush
+              %li.list-group-item
+                = form.text_field :title, :class => "form-control #{ @post.errors.include?(:title) ? 'is-invalid' : ''}", :placeholder => 'Title of your post', maxlength: 50, required: true
+                - if @post.errors.include?(:title)
+                  .invalid-feedback
+                    = @post.errors[:title].join(", ").capitalize
+              %li.list-group-item
+                = form.text_area :body, :class => "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", :placeholder => 'Say something here!', :rows => 9
+                - if @post.errors.include?(:body)
+                  .invalid-feedback
+                    = @post.errors[:body].join(", ").capitalize
+              %li.list-group-item
+                %small.text-muted Add photos/videos
+                .custom-file
+                  = form.file_field :attachments, multiple: true, class: "custom-file-input #{ @post.errors.include?(:attachments) ? 'is-invalid' : '' }"
+                  = form.label :attachments, class: "custom-file-label" do
+                    No attachment selected.
+                  - if @post.errors.include?(:attachments)
+                    .invalid-feedback
+                      = @post.errors[:attachments].join(", ").capitalize
+            .card-footer
+              = form.submit "Post", :class => 'btn btn-danger float-right'
+      - else
+        .card
+          %h4.card-header Post stories to your hearts content.
+          .card-body
+            %p.card-text
+              In Rails-Blog, you can post your lengthy articles in just one click! Just log in and you can join other bloggers in disrupting digital media.
+          .card-footer
+            = link_to login_path, class: "btn btn-danger" do
+              = icon("fas", "sign-in-alt")
+              Login
+    .col-8
+      = render partial: "partials/posts", locals: {posts: @posts}

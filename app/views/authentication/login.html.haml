@@ -1,0 +1,23 @@
+- @title = "Login to Rails-Blog"
+.card-body
+  = form_with url: login_path, method: :post, class: "form-signin form-horizontal needs-validation", local: true do |form|
+    .d-flex.justify-content-center
+      = link_to root_path, class: "align-self-center" do
+        = image_tag("logos/logo.png")
+    %p#profile-name.profile-name-card Log in to Rails-Blog
+    %span#reauth-email.reauth-email
+    .form-group
+      = form.email_field :email, class: "form-control #{ !flash[:error].blank? ? 'is-invalid' : ''}", placeholder: "Email address", id: "inputEmail", required: true, autofocus: true
+    .form-group
+      = form.password_field :password, class: "form-control #{ !flash[:error].blank? ? 'is-invalid' : ''}", placeholder: "Password", id: "inputPassword", required: true
+      - if !flash[:error].blank?
+        .invalid-feedback
+          = flash[:error]
+    .form-group
+      #remember.checkbox
+        = form.label :remember_me do
+          = form.check_box :remember_me
+          %span Remember me
+      = form.submit "Log In", class: "btn btn-lg btn-primary btn-block btn-signin"
+.card-footer
+  = link_to "Don't have an account yet? Register here!", sign_up_path

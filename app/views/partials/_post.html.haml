@@ -1,0 +1,20 @@
+.card.mb-4
+  .card-body
+    %h6.card-title.mb-4
+      = render partial: "partials/profile-partial", locals: {user: post.user}
+    %p
+      %small.text-muted= time_ago_in_words(post.created_at) + " ago"
+    .d-flex.justify-content-center
+      %h6.font-weight-bold= post.title
+    %hr/
+    %p.card-text.mb-1
+      = simple_format(truncate(post.body, length: 100))
+    - if post.first_attachment.present?
+      - first_attachment = post.first_attachment
+      - if first_attachment.content_type.starts_with?("image/")
+        = image_tag first_attachment, class: "img-thumbnail"
+      - elsif first_attachment.content_type.starts_with?("video/")
+        .embed-responsive.embed-responsive-16by9
+          = video_tag(url_for(first_attachment), class: "embed-responsive-item", controls: "")
+  .card-footer
+    = link_to("Read more...", post_path(post) , class: "btn btn-outline-dark float-right")

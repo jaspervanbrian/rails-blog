@@ -1,0 +1,6 @@
+- if flash[:success].present?
+  .alert.alert-success.flash-message{:role => "alert"}
+    = flash[:success]
+- elsif flash[:error].present?
+  .alert.alert-danger.flash-message{:role => "alert"}
+    = flash[:error]

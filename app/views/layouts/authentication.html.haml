@@ -1,0 +1,18 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title= @title || "Blog Site"
+    = csrf_meta_tags
+    = csp_meta_tag
+    = favicon_link_tag 'logos/logo.png'
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    = render partial: "partials/flash-message"
+    .container
+      .row
+        .col-12
+          .d-flex.justify-content-center
+            .card.card-container.col-6
+              = yield

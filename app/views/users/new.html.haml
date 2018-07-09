@@ -1,0 +1,42 @@
+- @title = "Register"
+.card-body
+  = form_with scope: :user, url: sign_up_path, model: @user, class: "form-signin form-horizontal needs-validation", local: true do |form|
+    .d-flex.justify-content-center
+      = link_to root_path, class: "align-self-center" do
+        = image_tag("logos/logo.png")
+    %p#profile-name.profile-name-card Sign up now!
+    %span#reauth-email.reauth-email
+    .form-group
+      .row
+        .col-6
+          = form.text_field :first_name, class: "form-control #{ @user.errors.include?(:first_name) ? 'is-invalid' : '' }", placeholder: "First name", required: true, autofocus: true
+          - if @user.errors.include?(:first_name)
+            .invalid-feedback
+              = @user.errors[:first_name].join(", ").capitalize
+        .col-6
+          = form.text_field :last_name, class: "form-control #{ @user.errors.include?(:last_name) ? 'is-invalid' : '' }", placeholder: "Last name", required: true
+          - if @user.errors.include?(:last_name)
+            .invalid-feedback
+              = @user.errors[:last_name].join(", ").capitalize
+    .form-group
+      = form.email_field :email, class: "form-control #{ @user.errors.include?(:email) ? 'is-invalid' : '' }", placeholder: "Email address", id: "inputEmail", required: true
+      - if @user.errors.include?(:email)
+        .invalid-feedback
+          = @user.errors[:email].join(", ").capitalize
+    .form-group
+      = form.password_field :password, class: "form-control #{ @user.errors.include?(:password) ? 'is-invalid' : ''}", placeholder: "Password", id: "inputPassword", required: true
+      - if @user.errors.include?(:password)
+        .invalid-feedback
+          = @user.errors[:password].join(", ").capitalize
+    .form-group
+      = form.password_field :password_confirmation, class: "form-control #{ @user.errors.include?(:password_confirmation) ? 'is-invalid' : ''}", placeholder: "Confirm Password", required: true
+      - if @user.errors.include?(:password_confirmation)
+        .invalid-feedback
+          = @user.errors[:password_confirmation].join(", ").capitalize
+    .row
+      .col-6
+        .form-group
+          = form.submit "Create account", class: "btn btn-lg btn-primary btn-block btn-signin"
+      .col-6
+        .form-group
+          = link_to "Back", login_path , class: "btn btn-block btn-secondary"

@@ -1,0 +1,76 @@
+- @title = @post.title
+.container
+  .row
+    .col-12
+      .list-group-item.list-group-item-action.flex-column.align-items-start
+        .d-flex.w-100.justify-content-between
+          = render partial: "partials/show-post-profile", locals: {post_created_at: @post.created_at, user: @post.user}
+          %div
+            %p
+              %small.text-muted= @post.created_at === @post.updated_at ? "" : "(Last update: " + @post.updated_at.strftime("%B %d, %Y | %A, %l:%M %p") + ")"
+            - if logged_in?
+              - if @current_user.id === @post.user_id
+                .float-right
+                  = link_to icon('fas', 'edit'), edit_post_path(@post), class: "btn btn-outline-danger mr-4"
+                  %button.btn.btn-outline-dark.float-right{"data-target" => "#deleteModal", "data-toggle" => "modal", :type => "button"}= icon('far', 'trash-alt')
+        %hr.mt-2.mb-4/
+        .d-flex.justify-content-center.mb-4
+          %h3= @post.title
+        %p.mb-1
+          = simple_format(h(@post.body))
+        - if @attachments.present?
+          - @attachments.each do |attachment|
+            - if attachment.content_type.starts_with?("image/")
+              = image_tag attachment, class: "img-thumbnail m-2"
+            - elsif attachment.content_type.starts_with?("video/")
+              .embed-responsive.embed-responsive-16by9.m-2
+                = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "")
+  .row.my-4
+    .col-10
+      - if logged_in?
+        = form_with scope: :comment, model: @comment, url: post_comments_path(@post), local: true do |form|
+          .card.mb-4
+            .card-body
+              .form-group
+                = form.text_area :body, class: "form-control #{ @comment.errors.include?(:body) ? 'is-invalid' : '' }", placeholder: "What are your thoughts for this post?", rows: 5
+                - if @comment.errors.include?(:body)
+                  .invalid-feedback
+                    = @comment.errors[:body].join(", ").capitalize
+              .form-group
+                %small.text-muted Add photos/videos
+                .custom-file
+                  = form.file_field :attachments, multiple: true, class: "custom-file-input #{ @comment.errors.include?(:attachments) ? 'is-invalid' : '' }"
+                  = form.label :attachments, class: "custom-file-label" do
+                    No attachment selected.
+                  - if @comment.errors.include?(:attachments)
+                    .invalid-feedback
+                      = @comment.errors[:attachments].join(", ").capitalize
+            .card-footer
+              = form.submit "Reply", class: "btn btn-danger"
+      - else
+        .form-group
+          .card
+            .card-body
+              %h6
+                = link_to "Log in", login_path
+                to comment on this post!
+      %h6.font-weight-bold All comments
+      %hr/
+      .list-group
+        - unless @post.comments.empty?
+          = render partial: "partials/comment", collection: @post.comments, locals: {post: @post}
+        - else
+          .alert.alert-info No comments yet. Be the first to comment!
+#deleteModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "deleteModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog{:role => "document"}
+    .modal-content
+      .modal-header
+        %h5#deleteModalLabel.modal-title Delete
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        Are you sure you want to delete this post?
+      .modal-footer
+        = form_with model: @post, method: :delete, class: 'form-horizontal', local: true do |p|
+          %button.btn.btn-outline-secondary{"data-dismiss" => "modal", :type => "button"} Cancel
+          = p.submit "Delete Post", class: "btn btn-danger"

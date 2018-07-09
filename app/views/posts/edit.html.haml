@@ -1,0 +1,44 @@
+- @title = "Editing " + @post.title
+.container
+  = form_with scope: :post, model: @post, local: true do |p|
+    .row
+      .col-12
+        .list-group-item.list-group-item-action.flex-column.align-items-start
+          .d-flex.w-100.justify-content-between
+            = render partial: "partials/show-post-profile", locals: {post_created_at: @post.created_at, user: @post.user}
+            %div
+              %p
+                %small.text-muted= @post.created_at === @post.updated_at ? "" : "(Last update: " + @post.updated_at.strftime("%B %d, %Y | %A, %l:%M %p") + ")"
+              - if logged_in?
+                - if @current_user.id === @post.user_id
+                  .float-right
+                    = p.button type: "submit", class: "btn btn-success" do
+                      = icon("fas", "check")
+                    = link_to @post, class: "btn btn-secondary" do
+                      = icon("fas", "times")
+          %hr.mt-4.mb-4/
+          %p.mb-1
+            = p.text_area :body, rows: 10, class: "form-control #{ @post.errors.include?(:body) ? 'is-invalid' : ''}", placeholder: "Say something...", required: true
+            - if @post.errors.include?(:body)
+              .invalid-feedback
+                = @post.errors[:body].join(", ").capitalize
+          .form-group
+            %small.text-muted Add photos/videos
+            .custom-file
+              = p.file_field :attachments, multiple: true, class: "custom-file-input #{ @post.errors.include?(:attachments) ? 'is-invalid' : '' }"
+              = p.label :attachments, class: "custom-file-label" do
+                No photo(s) selected.
+              - if @post.errors.include?(:attachments)
+                .invalid-feedback
+                  = @post.errors[:attachments].join(", ").capitalize
+          - if @attachments.present?
+            .row.my-3.d-flex.justify-content-around
+              - @attachments.each do |attachment|
+                .attachment-container.align-self-end.text-center
+                  - if attachment.content_type.starts_with?("image/")
+                    = image_tag attachment, class: "img-thumbnail m-2"
+                  - elsif attachment.content_type.starts_with?("video/")
+                    .embed-responsive.embed-responsive-16by9.m-2
+                      = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "")
+                  = link_to delete_image_attachment_post_path(attachment), class: "btn btn-outline-danger", method: :delete, data: {confirm: "Are you sure you want to delete this attachment? (It can't be undone.)"} do
+                    = icon("fas", "times")
