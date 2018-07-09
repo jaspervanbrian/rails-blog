@@ -116,15 +116,7 @@ class UsersController < ApplicationController
     @posts = @user.posts.latest.page(params[:page])
     @post = Post.new
     if helpers.logged_in?
-      @conversation = Conversation.new
-      @conversationsUsers = ConversationsUser.where(user_id: [@user.id, session[:user_id]])
-      @conversationsUsers.each do |conversationUser|
-        conversation = conversationUser.conversation
-        users = conversation.users # users of this conversation
-        if conversation.name.nil? && (users.length === 2) && ((users.include?(@user.id) && users.include?(session[:user_id]))) # Checks if the conversation has only 2 users (You and your friend) and the default is no conversation name because it uses your friends name as convo name
-          @conversation = conversation
-        end
-      end
+      @conversation = ConversationsUsersRepository.new.get_user_conversation(@user.id, session[:user_id]) # repositories/conversations_users_repositories
     end
   end
 
