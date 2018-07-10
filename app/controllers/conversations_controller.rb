@@ -1,5 +1,6 @@
 class ConversationsController < ApplicationController
   def index
+    @conversations_with_users = ConversationsUser.where(user_id: session[:user_id]).latest
   end
 
   def new

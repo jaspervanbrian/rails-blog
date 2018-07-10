@@ -6,8 +6,6 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many_attached :attachments, dependent: :destroy
 
-  scope :latest, lambda { order(created_at: :desc) }
-
   # Pagination kaminari
   paginates_per 10
 
