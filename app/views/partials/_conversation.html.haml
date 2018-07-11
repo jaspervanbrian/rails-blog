@@ -1,0 +1,12 @@
+%a.list-group-item.list-group-item-action.flex-column.align-items-start.active
+  .d-flex.w-100.justify-content-between
+    .row
+      .col-6
+        - if conversation.logo.attached?
+          = image_tag conversation.logo, class: "rounded-circle mr-2", size:"50x50"
+        - else
+          = image_tag "profile_avatars/default.png", class: "rounded-circle mr-2", size:"50x50"
+      .col-6
+        %p= conversation.name, class: "profile-link font-weight-bold"
+        %p.mb-1
+    %small

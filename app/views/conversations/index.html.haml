@@ -1,13 +1,18 @@
 - @title = "Your Conversations"
 .container-fluid
-  .col-4
-    .list-group#conversations
-      - if @conversations_with_users.present?
-        - @conversations_with_users.conversations.each do |conversation|
-          %a.list-group-item.list-group-item-action.flex-column.align-items-start.active
-            .d-flex.w-100.justify-content-between
-              %h5.mb-1
-              %small
-            %p.mb-1
-      - else
-  .col-8
+  .row
+    .col-4
+      .list-group#conversations
+        - if @conversations_with_users.present?
+          - @conversations_with_users.conversations.each do |conversation|
+            = render partial: "partials/conversation", locals: {conversation: conversation}
+        - else
+          .alert.alert-info
+            No past conversations found.
+    .col-8
+      .card#conversation
+        - if params[:to_id].present?
+          .card-header.d-flex.justify-content-center
+            %h5= @conversation.name
+          .card-body
+          .card-footer

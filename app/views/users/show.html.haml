@@ -24,10 +24,16 @@
                 = @posts.length
                 %span Posts
               %li= @user.full_name
-          .form-group.d-flex.justify-content-center
-            = link_to conversations_path, class: "btn btn-danger" do
-              = icon("fas", "envelope")
-              Message
+          - if logged_in?
+            .form-group.d-flex.justify-content-center
+              - if @conversation.new_record?
+                = link_to conversations_path(to_id: @user.id), class: "btn btn-danger" do
+                  = icon("fas", "envelope")
+                  Message
+              - else
+                = link_to conversation_path(@conversation), class: "btn btn-danger" do
+                  = icon("fas", "envelope")
+                  Message
       .col-8
         / Nav tabs
         %ul.nav.nav-tabs
