@@ -5,9 +5,14 @@ class ConversationsUsersRepository
     conversationsUsers.each do |conversationUser|
       conversation = conversationUser.conversation # conversation between me and the user clicked
       users = conversation.users # users of this conversation
-      if conversation.name.nil? && (users.length === 2) && ((users.include?(@user.id) && users.include?(session[:user_id]))) # Checks if the conversation has only 2 users (You and your friend) and the default is no conversation name because it uses your friends name as convo name
-        conversation = conversation
-        break
+      if conversation.name.nil? 
+        if (users.length === 2) && ((users.include?(@user.id) && users.include?(session[:user_id]))) # Checks if the conversation has only 2 users (You and your friend) and the default is no conversation name because it uses your friends name as convo name
+          conversation = conversation
+          break
+        elsif conversation.name.nil? && (users.length === 1) && users.include?(session[:user_id]) # Checks for self messages
+          conversation = conversation
+          break
+        end
       end
     end
     conversation

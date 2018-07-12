@@ -22,7 +22,7 @@
               %li.list-group-item
                 %small.text-muted Add photos/videos
                 .custom-file
-                  = form.file_field :attachments, multiple: true, class: "custom-file-input #{ @post.errors.include?(:attachments) ? 'is-invalid' : '' }"
+                  = form.file_field :attachments, multiple: true, accept: "image/*,video/*", class: "custom-file-input #{ @post.errors.include?(:attachments) ? 'is-invalid' : '' }"
                   = form.label :attachments, class: "custom-file-label" do
                     No attachment selected.
                   - if @post.errors.include?(:attachments)

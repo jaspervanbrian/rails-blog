@@ -14,9 +14,6 @@ class ConversationsController < ApplicationController
     end
   end
 
-  def new
-  end
-
   def create
   end
 

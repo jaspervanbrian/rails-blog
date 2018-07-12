@@ -116,7 +116,7 @@ class UsersController < ApplicationController
     @posts = @user.posts.latest.page(params[:page])
     @post = Post.new
     if helpers.logged_in?
-      @conversation = ConversationsUsersRepository.new.get_user_conversation(@user.id, session[:user_id]) # repositories/conversations_users_repositories
+      @conversation = ConversationsUsersRepository.new.get_user_conversation(@user, session[:user_id]) # repositories/conversations_users_repositories
     end
   end
 
