@@ -10,7 +10,6 @@ class ConversationsController < ApplicationController
         unless @conversation.new_record?
           redirect_to conversation_path(@conversation)
         end
-        @message = Message.new(conversation: @conversation, user: helpers.current_user)
       else
         flash[:error] = "User does not exist."
         redirect_to conversations_path
@@ -19,7 +18,6 @@ class ConversationsController < ApplicationController
   end
 
   def create
-
   end
 
   def show
@@ -44,5 +42,9 @@ class ConversationsController < ApplicationController
 
   def get_user_conversation
     ConversationsUsersRepository.new.get_user_conversation(@user, session[:user_id]) # repositories/conversations_users_repositories
+  end
+
+  def message_params
+    params.require(:message).permit(:body, attachments: [])
   end
 end

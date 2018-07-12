@@ -16,8 +16,7 @@
             %h5= @conversation.name
           .card-body
           .card-footer
-            = form_with model: @message, url: @conversation.new_record? ? conversations_path : conversation_path(@conversation) do |form|
-              - binding.pry
+            = form_with scope: :message, url: @conversation.new_record? ? conversations_path : conversation_path(@conversation) do |form|
               .row
                 .col-9
                   = form.text_area :body, class: "form-control", placeholder: "Say something...", rows: 3
