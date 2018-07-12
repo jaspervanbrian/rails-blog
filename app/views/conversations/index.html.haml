@@ -16,19 +16,19 @@
             %h5= @conversation.name
           .card-body
           .card-footer
-            - if @conversation.new_record?
-              = form_with scope: :message, url: conversations_path, method: :post do |form|
-                .row
-                  .col-9
-                    = form.text_area :body, class: "form-control", placeholder: "Say something...", rows: 3
-                    %small.text-muted Add photos/videos
-                    .custom-file
-                      = form.file_field :attachments, multiple: true, accept: "image/*,video/*", class: "custom-file-input"
-                      = form.label :attachments, class: "custom-file-label" do
-                        No attachment selected.
-                  .col-3.d-flex.align-items-center
-                    = button_tag type: "submit", class: "btn btn-outline-danger btn-block h-75" do
-                      %h2
-                        = icon("fas", "paper-plane")
+            = form_with model: @message, url: @conversation.new_record? ? conversations_path : conversation_path(@conversation) do |form|
+              - binding.pry
+              .row
+                .col-9
+                  = form.text_area :body, class: "form-control", placeholder: "Say something...", rows: 3
+                  %small.text-muted Add photos/videos
+                  .custom-file
+                    = form.file_field :attachments, multiple: true, accept: "image/*,video/*", class: "custom-file-input"
+                    = form.label :attachments, class: "custom-file-label" do
+                      No attachment selected.
+                .col-3.d-flex.align-items-center
+                  = button_tag type: "submit", class: "btn btn-outline-danger btn-block h-75" do
+                    %h2
+                      = icon("fas", "paper-plane")
                       
 
