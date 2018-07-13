@@ -3,8 +3,8 @@
   .row
     .col-4
       .list-group#conversations
-        - if @conversations_with_users.present?
-          - @conversations_with_users.conversations.each do |conversation|
+        - if @conversations.present?
+          - @conversations.each do |conversation|
             = render partial: "partials/conversation", locals: {conversation: conversation}
         - else
           .alert.alert-info
@@ -15,8 +15,16 @@
           .card-header.d-flex.justify-content-center
             %h5= @conversation.name
           .card-body
+            - if (messages = @conversation.messages).present?
+              - messages.each do |message|
+                .row
+                  %p= message.body
+            - else
+              .row
+                .alert.alert-info.w-100.d-flex.justify-content-center
+                  No messages yet.
           .card-footer
-            = form_with scope: :message, url: @conversation.new_record? ? conversations_path : conversation_path(@conversation) do |form|
+            = form_with scope: :message, url: @conversation.new_record? ? conversations_path(to_id: @user.id) : conversation_path(@conversation), method: :post, local: true do |form|
               .row
                 .col-9
                   = form.text_area :body, class: "form-control", placeholder: "Say something...", rows: 3
@@ -29,5 +37,3 @@
                   = button_tag type: "submit", class: "btn btn-outline-danger btn-block h-75" do
                     %h2
                       = icon("fas", "paper-plane")
-                      
-

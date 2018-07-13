@@ -1,0 +1,39 @@
+- @title = "Your Conversations"
+.container-fluid
+  .row
+    .col-4
+      .list-group#conversations
+        - if @conversations.present?
+          - @conversations.each do |conversation|
+            = render partial: "partials/conversation", locals: {conversation: conversation}
+        - else
+          .alert.alert-info
+            No past conversations found.
+    .col-8
+      .card#conversation
+        .card-header.d-flex.justify-content-center
+          %h5= @conversation.name
+        .card-body
+          - if (messages = @conversation.messages).present?
+            - messages.each do |message|
+              .row
+                %strong= message.user.full_name
+                %p= message.body
+          - else
+            .row
+              .alert.alert-info.w-100.d-flex.justify-content-center
+                No messages yet.
+        .card-footer
+          = form_with model: @message, url: conversation_messages_path(@conversation), local: true do |form|
+            .row
+              .col-9
+                = form.text_area :body, class: "form-control", placeholder: "Say something...", rows: 3
+                %small.text-muted Add photos/videos
+                .custom-file
+                  = form.file_field :attachments, multiple: true, accept: "image/*,video/*", class: "custom-file-input"
+                  = form.label :attachments, class: "custom-file-label" do
+                    No attachment selected.
+              .col-3.d-flex.align-items-center
+                = button_tag type: "submit", class: "btn btn-outline-danger btn-block h-75" do
+                  %h2
+                    = icon("fas", "paper-plane")

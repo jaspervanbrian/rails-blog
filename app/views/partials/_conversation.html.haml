@@ -1,12 +1,13 @@
-%a.list-group-item.list-group-item-action.flex-column.align-items-start.active
+%a.list-group-item.list-group-item-action.flex-column.align-items-start
   .d-flex.w-100.justify-content-between
     .row
-      .col-6
+      .col-3
         - if conversation.logo.attached?
-          = image_tag conversation.logo, class: "rounded-circle mr-2", size:"50x50"
+          = image_tag conversation.logo, class: "rounded-circle mr-2", size:"45x45"
         - else
-          = image_tag "profile_avatars/default.png", class: "rounded-circle mr-2", size:"50x50"
-      .col-6
-        %p= conversation.name, class: "profile-link font-weight-bold"
+          = image_tag "profile_avatars/default.png", class: "rounded-circle mr-2", size:"45x45"
+      .col-9
+        %p.profile-link.font-weight-bold= conversation.name
         %p.mb-1
     %small
+      Hello

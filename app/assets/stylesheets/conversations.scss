@@ -10,6 +10,7 @@
 #conversation {
 	height: 80vh;
 	.card-body {
+		height: 100%;
 		overflow-y: scroll;
 	}
 }
