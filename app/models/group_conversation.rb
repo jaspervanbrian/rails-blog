@@ -1,0 +1,2 @@
+class GroupConversation < ApplicationRecord
+end

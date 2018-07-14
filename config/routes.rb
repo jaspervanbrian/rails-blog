@@ -37,6 +37,4 @@ Rails.application.routes.draw do
   resources :conversations, except: [:new] do
     resources :messages, only: [:index, :create]
   end
-
-  resources :messages, only: [:create]
 end

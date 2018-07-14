@@ -1,6 +1,6 @@
 class ConversationsUsersRepository
   def get_user_conversation(user, my_id)
-    conversation = Conversation.new(name: user.full_name)
+    conversation = Conversation.new
     conversationsUsers = ConversationsUser.where(user_id: [user.id, my_id])
     if conversationsUsers.present?
       conversationsUsers.each do |conversationUser|
