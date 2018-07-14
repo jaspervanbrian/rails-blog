@@ -6,7 +6,7 @@ class ConversationsController < ApplicationController
     if params[:to_id].present?
       @user = User.find_by(id: params[:to_id])
       unless @user.nil?
-        @conversation = get_user_conversation
+        @conversation = get_single_conversation
         unless @conversation.new_record?
           redirect_to conversation_path(@conversation)
         end
@@ -20,7 +20,8 @@ class ConversationsController < ApplicationController
   def create
     if params[:to_id].present? && message_params.present?
       @user = User.find_by(id: params[:to_id])
-      @conversation = get_user_conversation
+      @conversation = get_single_conversation
+      @conversation.type = "SingleConversation"
       @conversation.save
       ConversationsUser.create(conversation: @conversation, user: helpers.current_user)
       if @user.id != helpers.current_user.id
@@ -38,7 +39,7 @@ class ConversationsController < ApplicationController
   end
 
   def show
-    @conversations = helpers.current_user.conversations
+    @conversations = helpers.current_user.conversations.latest
     @conversation = Conversation.find_by(id: params[:id])
     if @conversation.nil?
       flash[:error] = "Conversation does not exist."
@@ -58,8 +59,8 @@ class ConversationsController < ApplicationController
 
   private
 
-  def get_user_conversation
-    ConversationsUsersRepository.new.get_user_conversation(@user, session[:user_id]) # repositories/conversations_users_repositories
+  def get_single_conversation
+    ConversationsUsersRepository.new.get_single_conversation(@user, session[:user_id]) # repositories/conversations_users_repositories
   end
 
   def message_params

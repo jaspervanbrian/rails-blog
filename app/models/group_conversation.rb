@@ -1,2 +1,3 @@
-class GroupConversation < ApplicationRecord
+class GroupConversation < Conversation
+  validates :name, presence: true
 end

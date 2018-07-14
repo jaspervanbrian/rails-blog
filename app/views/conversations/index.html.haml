@@ -13,7 +13,7 @@
       .card#conversation
         - if params[:to_id].present?
           .card-header.d-flex.justify-content-center
-            %h5= 
+            %h5= @user.full_name
           .card-body
             - if (messages = @conversation.messages).present?
               - messages.each do |message|
