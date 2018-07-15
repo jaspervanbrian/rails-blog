@@ -24,9 +24,7 @@ class ConversationsController < ApplicationController
       @conversation.type = "SingleConversation"
       @conversation.save
       ConversationsUser.create(conversation: @conversation, user: helpers.current_user)
-      if @user.id != helpers.current_user.id
-        @conversation.users << @user
-      end
+      @conversation.users << @user
 
       @message = Message.new(message_params)
       @message.conversation = @conversation
