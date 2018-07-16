@@ -7,4 +7,12 @@ class ConversationsUsersRepository
                       .first
     Conversation.find_by(id: conversation_id) || Conversation.new
   end
+
+  def get_self_conversation(my_id)
+    conversation = Conversation.where(type: "SelfConversation")
+                    .left_joins(:conversations_users)
+                    .where("conversations_users.user_id  = ?", my_id)
+                    .first
+    conversation
+  end
 end

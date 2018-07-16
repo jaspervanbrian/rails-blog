@@ -1,0 +1,2 @@
+class SelfConversation < Conversation
+end

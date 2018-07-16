@@ -6,7 +6,8 @@ class ConversationsController < ApplicationController
     if params[:to_id].present?
       @user = User.find_by(id: params[:to_id])
       unless @user.nil?
-        @conversation = get_single_conversation
+        @conversation = @user.id === session[:user_id] ? get_self_conversation
+                                                      : get_single_conversation
         unless @conversation.new_record?
           redirect_to conversation_path(@conversation)
         end
@@ -21,10 +22,11 @@ class ConversationsController < ApplicationController
     if params[:to_id].present? && message_params.present?
       @user = User.find_by(id: params[:to_id])
       @conversation = get_single_conversation
-      @conversation.type = "SingleConversation"
+      @conversation.type = @user.id === session[:user_id] ? "SelfConversation"
+                                                          : "SingleConversation"
       @conversation.save
       ConversationsUser.create(conversation: @conversation, user: helpers.current_user)
-      @conversation.users << @user
+      @conversation.users << @user if @conversation.type === "SingleConversation"
 
       @message = Message.new(message_params)
       @message.conversation = @conversation
@@ -59,6 +61,10 @@ class ConversationsController < ApplicationController
 
   def get_single_conversation
     ConversationsUsersRepository.new.get_single_conversation(@user, session[:user_id]) # repositories/conversations_users_repositories
+  end
+
+  def get_self_conversation
+    ConversationsUsersRepository.new.get_self_conversation(session[:user_id])
   end
 
   def message_params
