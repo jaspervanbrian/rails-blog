@@ -1,4 +1,4 @@
-%a.list-group-item.list-group-item-action.flex-column.align-items-start
+= link_to conversation_path(conversation), class: "list-group-item list-group-item-action flex-column align-items-start" do
   .row
     - last_message = conversation.messages.last
     .col-2

@@ -2,11 +2,11 @@ class ConversationsController < ApplicationController
   before_action :confirm_authenticated
 
   def index
-    @conversations = helpers.current_user.conversations.latest
+    @conversations = helpers.current_user.conversations.includes(:messages).sort_by { |c| c.messages.max_by { |m| m.updated_at } }.reverse!
     if params[:to_id].present?
       @user = User.find_by(id: params[:to_id])
       unless @user.nil?
-        @conversation = helpers.self_send? ? get_or_new_self_conversation
+        @conversation = helpers.self_send?(@user) ? get_or_new_self_conversation
                                             : get_or_new_single_conversation
         unless @conversation.new_record?
           redirect_to conversation_path(@conversation)
@@ -21,7 +21,7 @@ class ConversationsController < ApplicationController
   def create
     if params[:to_id].present? && message_params.present?
       @user = User.find_by(id: params[:to_id])
-      if helpers.self_send?
+      if helpers.self_send?(@user)
         @conversation = get_or_new_self_conversation
         redirect_to conversation_path(@conversation) if @conversation.persisted?
         @conversation.type = "SelfConversation"
@@ -46,7 +46,11 @@ class ConversationsController < ApplicationController
   end
 
   def show
-    @conversations = helpers.current_user.conversations.latest
+    @conversations = helpers.current_user.conversations.includes(:messages).sort_by do |c| 
+                        c.messages.max_by do |m|
+                          m.updated_at
+                        end
+                      end.reverse!
     @conversation = Conversation.find_by(id: params[:id])
     if !@conversation.users.include?(helpers.current_user) || @conversation.nil?
       flash[:error] = "Conversation does not exist."

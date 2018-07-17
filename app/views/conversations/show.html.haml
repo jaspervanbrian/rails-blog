@@ -12,7 +12,11 @@
     .col-8
       .card#conversation
         .card-header.d-flex.justify-content-center
-          %h5= @conversation.name
+          - if @conversation.type == "SelfConversation"
+            - @name = current_user.full_name + " (You)"
+          - elsif @conversation.type == "SingleConversation"
+            - @name = @conversation.users.where.not(id: current_user.id).first.full_name
+          %h5= @conversation.type == "GroupConversation" ? @conversation.name : @name
         .card-body
           - if (messages = @conversation.messages).present?
             - messages.each do |message|
