@@ -2,7 +2,7 @@ class ConversationsController < ApplicationController
   before_action :confirm_authenticated
 
   def index
-    @conversations = helpers.current_user.conversations.includes(:messages).sort_by { |c| c.messages.max_by { |m| m.updated_at } }.reverse!
+    @conversations = fetch_last_active_conversations
     if params[:to_id].present?
       @user = User.find_by(id: params[:to_id])
       unless @user.nil?
@@ -46,11 +46,7 @@ class ConversationsController < ApplicationController
   end
 
   def show
-    @conversations = helpers.current_user.conversations.includes(:messages).sort_by do |c| 
-                        c.messages.max_by do |m|
-                          m.updated_at
-                        end
-                      end.reverse!
+    @conversations = fetch_last_active_conversations
     @conversation = Conversation.find_by(id: params[:id])
     if !@conversation.users.include?(helpers.current_user) || @conversation.nil?
       flash[:error] = "Conversation does not exist."
@@ -71,11 +67,20 @@ class ConversationsController < ApplicationController
   private
 
   def get_or_new_single_conversation
-    ConversationsUsersRepository.new.get_or_new_single_conversation(@user, session[:user_id]) # repositories/conversations_users_repositories
+    # repositories/conversations_users_repositories
+    ConversationsUsersRepository.new.get_or_new_single_conversation(@user, session[:user_id]) 
   end
 
   def get_or_new_self_conversation
     ConversationsUsersRepository.new.get_or_new_self_conversation(session[:user_id])
+  end
+
+  def fetch_last_active_conversations
+    helpers.current_user.conversations.includes(:messages).sort_by do |conversation| 
+      conversation.messages.max_by do |message|
+        message.updated_at
+      end
+    end.reverse!
   end
 
   def message_params
