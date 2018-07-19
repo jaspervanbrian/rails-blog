@@ -6,6 +6,9 @@ class Message < ApplicationRecord
   validate :content
   validate :attachments_type
 
+  after_create_commit {
+    MessageBroadcastJob.perform_later(self)
+  }
   private
   
   def content

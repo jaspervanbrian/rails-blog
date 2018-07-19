@@ -39,8 +39,6 @@ class ConversationsController < ApplicationController
       @message.conversation = @conversation
       @message.user = helpers.current_user
       @message.save
-
-      redirect_to conversation_path(@conversation)
     else
     end
   end

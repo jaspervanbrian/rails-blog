@@ -5,7 +5,11 @@ class MessagesController < ApplicationController
     message.conversation = conversation
     message.user = helpers.current_user
     message.save
-    redirect_to conversation_path(conversation)
+
+    respond_to do |format|
+      format.html { redirect_to conversation_path(conversation) }
+      format.js
+    end
   end
 
   private

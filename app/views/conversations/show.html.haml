@@ -18,51 +18,16 @@
             - @name = @conversation.users.where.not(id: current_user.id).first.full_name
           %h5= @conversation.type == "GroupConversation" ? @conversation.name : @name
         .card-body
-          - if (messages = @conversation.messages.includes(:user)).present?
-            - messages.each do |message|
-              - if message.user.id == session[:user_id]
-                - if @temp_user.present? && message.user.id == @temp_user.id
-                  .row.my-1
-                    .col-3.offset-9
-                      .row
-                        .col-12.text-right
-                          .badge.badge-primary= message.body
-                - else
-                  - @temp_user = message.user
-                  .row.my-1
-                    .col-3.offset-9
-                      .row
-                        .col-12.text-right
-                          %small.text-muted= message.user.full_name + " (You)"
-                      .row
-                        .col-12.text-right
-                          .badge.badge-primary= message.body
-              - else
-                - if @temp_user.present? && message.user.id == @temp_user.id
-                  .row.my-1
-                    .col-1
-                    .col-3
-                      .row
-                        .badge.badge-secondary= message.body
-                - else
-                  - @temp_user = message.user
-                  .row.my-1
-                    .col-1
-                      - if @temp_user.profile_avatar.attached?
-                        = image_tag @temp_user.profile_avatar, class: "rounded-circle mr-1", size:"40x40"
-                      - else
-                        = image_tag "profile_avatars/default.png", class: "rounded-circle mr-1", size:"40x40"
-                    .col-3
-                      .row
-                        %small.text-muted= message.user.full_name
-                      .row
-                        .badge.badge-secondary= message.body
-          - else
-            .row
-              .alert.alert-info.w-100.d-flex.justify-content-center
-                No messages yet.
+          .col-12
+            - if (messages = @conversation.messages.includes(:user)).present?
+              - messages.each do |message|
+                = render partial: "partials/message", locals: {message: message}
+            - else
+              .row
+                .alert.alert-info.w-100.d-flex.justify-content-center
+                  No messages yet.
         .card-footer
-          = form_with model: @message, url: conversation_messages_path(@conversation), local: true do |form|
+          = form_with model: @message, url: conversation_messages_path(@conversation) do |form|
             .row
               .col-9
                 = form.text_area :body, class: "form-control", placeholder: "Say something...", rows: 3

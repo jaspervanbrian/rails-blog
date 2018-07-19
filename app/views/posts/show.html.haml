@@ -9,7 +9,7 @@
             %p
               %small.text-muted= @post.created_at === @post.updated_at ? "" : "(Last update: " + @post.updated_at.strftime("%B %d, %Y | %A, %l:%M %p") + ")"
             - if logged_in?
-              - if @current_user.id === @post.user_id
+              - if session[:user_id] === @post.user_id
                 .float-right
                   = link_to icon('fas', 'edit'), edit_post_path(@post), class: "btn btn-outline-danger mr-4"
                   %button.btn.btn-outline-dark.float-right{"data-target" => "#deleteModal", "data-toggle" => "modal", :type => "button"}= icon('far', 'trash-alt')

@@ -18,7 +18,12 @@ class User < ApplicationRecord
     end
     user.validates :email, 'valid_email_2/email': true, length: { maximum: 255 }
   end
-  validates :password, length: { minimum: 8, maximum: 255 }, presence: true, on: [:update, :update_password]
+
+  validates :password, 
+            length: { minimum: 8, maximum: 255 }, 
+            presence: true, 
+            on: [:update, :update_password]
+
   validate :photo_avatar_validation, on: :update_profile_avatar
   validate :photo_banner_validation, on: :update_profile_banner
 

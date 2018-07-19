@@ -35,7 +35,7 @@
           %li.nav-item
             %a.nav-link.active{"data-toggle" => "tab", :href => "#posts"} Posts
           - if logged_in?
-            - if @current_user.id == @user.id
+            - if session[:user_id] == @user.id
               %li.nav-item
                 %a#createTab.nav-link{"data-toggle" => "tab", :href => "#create"} Create a post
               %li.nav-item
