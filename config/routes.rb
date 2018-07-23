@@ -36,4 +36,6 @@ Rails.application.routes.draw do
   resources :conversations, except: [:new] do
     resources :messages, only: [:create]
   end
+
+  mount ActionCable.server, at: '/cable'
 end

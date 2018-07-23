@@ -10,7 +10,7 @@
           .alert.alert-info
             No past conversations found.
     .col-8
-      .card#conversation
+      .card#conversation{data: {"conversation-id": @conversation.id, "me": current_user.id}}
         .card-header.d-flex.justify-content-center
           - if @conversation.type == "SelfConversation"
             - @name = current_user.full_name + " (You)"
@@ -21,7 +21,10 @@
           .col-12
             - if (messages = @conversation.messages.includes(:user)).present?
               - messages.each do |message|
-                = render partial: "partials/message", locals: {message: message}
+                - if current_user.id === message.user.id
+                  = render partial: "partials/my-message", locals: {message: message}
+                - else
+                  = render partial: "partials/message", locals: {message: message}
             - else
               .row
                 .alert.alert-info.w-100.d-flex.justify-content-center

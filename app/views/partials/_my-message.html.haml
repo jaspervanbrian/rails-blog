@@ -1,0 +1,14 @@
+- if session[:temp_user_id].present? && message.user.id === session[:temp_user_id]
+  .row
+    .col-6.offset-6
+      .row.float-right.mr-1
+        .alert.bg-primary.text-white= message.body
+- else
+  - session[:temp_user_id] = message.user.id
+  .row
+    .col-6.offset-6
+      .row
+        .col-12.text-right
+          %small.text-muted= message.user.full_name + " (You)"
+      .row.float-right.mr-1
+        .alert.bg-primary.text-white= message.body

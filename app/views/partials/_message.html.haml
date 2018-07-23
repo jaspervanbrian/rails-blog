@@ -1,35 +1,19 @@
-- if message.user.id == session[:user_id]
-  - if @temp_user.present? && message.user.id == @temp_user.id
-    .row
-      .col-6.offset-6
-        .row.float-right.mr-1
-          .alert.bg-primary.text-white= message.body
-  - else
-    - @temp_user = message.user
-    .row
-      .col-6.offset-6
-        .row
-          .col-12.text-right
-            %small.text-muted= message.user.full_name + " (You)"
-        .row.float-right.mr-1
-          .alert.bg-primary.text-white= message.body
+- if session[:temp_user_id].present? && message.user.id === session[:temp_user_id]
+  .row
+    .col-1
+    .col-6
+      .row
+        .alert.alert-secondary= message.body
 - else
-  - if @temp_user.present? && message.user.id == @temp_user.id
-    .row
-      .col-1
-      .col-6
-        .row
-          .alert.alert-secondary= message.body
-  - else
-    - @temp_user = message.user
-    .row
-      .col-1
-        - if @temp_user.profile_avatar.attached?
-          = image_tag @temp_user.profile_avatar, class: "rounded-circle mr-1", size:"40x40"
-        - else
-          = image_tag "profile_avatars/default.png", class: "rounded-circle mr-1", size:"40x40"
-      .col-6
-        .row
-          %small.text-muted= message.user.full_name
-        .row
-          .alert.alert-secondary= message.body
+  - session[:temp_user_id] = message.user.id
+  .row
+    .col-1
+      - if message.user.profile_avatar.attached?
+        = image_tag message.user.profile_avatar, class: "rounded-circle mr-1", size:"40x40"
+      - else
+        = image_tag "profile_avatars/default.png", class: "rounded-circle mr-1", size:"40x40"
+    .col-6
+      .row
+        %small.text-muted= message.user.full_name
+      .row
+        .alert.alert-secondary= message.body

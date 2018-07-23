@@ -21,36 +21,33 @@ class ConversationsController < ApplicationController
   def create
     if params[:to_id].present? && message_params.present?
       @user = User.find_by(id: params[:to_id])
-      if helpers.self_send?(@user)
-        @conversation = get_or_new_self_conversation
-        redirect_to conversation_path(@conversation) if @conversation.persisted?
-        @conversation.type = "SelfConversation"
-      else
-        @conversation = get_or_new_single_conversation
-        redirect_to conversation_path(@conversation) if @conversation.persisted?
-        @conversation.type = "SingleConversation"
-      end
-
-      @conversation.save
+      initizalize_conversation
       ConversationsUser.create(conversation: @conversation, user: helpers.current_user)
       @conversation.users << @user if @conversation.type === "SingleConversation"
-
       @message = Message.new(message_params)
       @message.conversation = @conversation
       @message.user = helpers.current_user
       @message.save
+      respond_to do |format|
+        format.html { redirect_to conversation_path(@conversation) }
+        format.js { render js: "window.location = '#{conversation_path(@conversation)}'"}
+      end
     else
     end
   end
 
   def show
-    @conversations = fetch_last_active_conversations
     @conversation = Conversation.find_by(id: params[:id])
-    if !@conversation.users.include?(helpers.current_user) || @conversation.nil?
+    if @conversation.nil? || !@conversation.users.include?(helpers.current_user)
       flash[:error] = "Conversation does not exist."
       redirect_to conversations_path
+    else
+      @conversations = fetch_last_active_conversations
+      @message = Message.new
+      ActionCable.server.broadcast("conversation_#{@conversation.id}_channel",
+        messages: []
+      )
     end
-    @message = Message.new
   end
 
   def edit
@@ -66,7 +63,7 @@ class ConversationsController < ApplicationController
 
   def get_or_new_single_conversation
     # repositories/conversations_users_repositories
-    ConversationsUsersRepository.new.get_or_new_single_conversation(@user, session[:user_id]) 
+    ConversationsUsersRepository.new.get_or_new_single_conversation(@user, session[:user_id])
   end
 
   def get_or_new_self_conversation
@@ -74,7 +71,7 @@ class ConversationsController < ApplicationController
   end
 
   def fetch_last_active_conversations
-    helpers.current_user.conversations.includes(:messages).sort_by do |conversation| 
+    helpers.current_user.conversations.includes(:messages).sort_by do |conversation|
       conversation.messages.max_by do |message|
         message.updated_at
       end
@@ -83,5 +80,19 @@ class ConversationsController < ApplicationController
 
   def message_params
     params.require(:message).permit(:body, attachments: [])
+  end
+
+  def conversation_persisted
+    @conversation.persisted?
+  end
+
+  def initizalize_conversation
+    @conversation = Conversation.new
+    if helpers.self_send?(@user)
+      @conversation.type = "SelfConversation"
+    else
+      @conversation.type = "SingleConversation"
+    end
+    @conversation.save
   end
 end
