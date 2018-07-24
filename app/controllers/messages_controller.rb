@@ -12,10 +12,6 @@ class MessagesController < ApplicationController
     )
 
     head :ok
-    # respond_to do |format|
-    #   format.html { redirect_to conversation_path(conversation) }
-    #   format.js
-    # end
   end
 
   private

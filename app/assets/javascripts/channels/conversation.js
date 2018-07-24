@@ -26,6 +26,8 @@ $(document).on("turbolinks:load", function() {
           } else {
             conversation_box.append(message.closest('.new'));
           }
+        	$("input").val(null);
+        	$("textarea").val("");
         } else {
           var message = $(data['messages'][1]);
           if(message.find('span').first().data('sender') == previous_sender){

@@ -4,7 +4,15 @@
     .col-1
     .col-6
       .row
-        .alert.alert-secondary= message.body
+        .alert.alert-secondary
+          = message.body
+          - if message.attachments.present?
+            - message.attachments.each do |attachment|
+              - if attachment.content_type.starts_with?("image/")
+                = image_tag attachment, class: "img-thumbnail m-2"
+              - elsif attachment.content_type.starts_with?("video/")
+                .embed-responsive.embed-responsive-16by9.m-2
+                  = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "")
   .row.new
     %span.d-none{data: {sender: message.user.id}}
     .col-1
@@ -16,7 +24,15 @@
       .row
         %small.text-muted= message.user.full_name
       .row
-        .alert.alert-secondary= message.body
+        .alert.alert-secondary
+          = message.body
+          - if message.attachments.present?
+            - message.attachments.each do |attachment|
+              - if attachment.content_type.starts_with?("image/")
+                = image_tag attachment, class: "img-thumbnail m-2"
+              - elsif attachment.content_type.starts_with?("video/")
+                .embed-responsive.embed-responsive-16by9.m-2
+                  = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "")
 - else
   - if session[:temp_user_id].present? && message.user.id === session[:temp_user_id]
     .row
@@ -24,7 +40,15 @@
       .col-1
       .col-6
         .row
-          .alert.alert-secondary= message.body
+          .alert.alert-secondary
+            = message.body
+            - if message.attachments.present?
+              - message.attachments.each do |attachment|
+                - if attachment.content_type.starts_with?("image/")
+                  = image_tag attachment, class: "img-thumbnail m-2"
+                - elsif attachment.content_type.starts_with?("video/")
+                  .embed-responsive.embed-responsive-16by9.m-2
+                    = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "")
   - else
     - session[:temp_user_id] = message.user.id
     .row
@@ -38,4 +62,12 @@
         .row
           %small.text-muted= message.user.full_name
         .row
-          .alert.alert-secondary= message.body
+          .alert.alert-secondary
+            = message.body
+            - if message.attachments.present?
+              - message.attachments.each do |attachment|
+                - if attachment.content_type.starts_with?("image/")
+                  = image_tag attachment, class: "img-thumbnail m-2"
+                - elsif attachment.content_type.starts_with?("video/")
+                  .embed-responsive.embed-responsive-16by9.m-2
+                    = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "")
