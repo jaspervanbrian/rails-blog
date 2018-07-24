@@ -16,14 +16,25 @@ $(document).on("turbolinks:load", function() {
     received: function(data) {
       if(data['messages'].length !== 0) {
         // Called when there's incoming data on the websocket for this channel
-        console.log(data['from'], conversation.data("me"))
-      	var conversation_box = conversation.find('.card-body').find('.col-12').first();
+      	var conversation_box = $(conversation.children('.card-body').children('.col-12')[0]);
+        var previous_message = conversation_box.children('.row').last();
+        var previous_sender = previous_message.children('span').first().data('sender');
         if(data['from'] == conversation.data("me")) {
-        	conversation_box.append(data['messages'][0]);
+          var message = $(data['messages'][0]);
+          if(message.find('span').first().data('sender') == previous_sender){
+            conversation_box.append(message.closest('.old'));
+          } else {
+            conversation_box.append(message.closest('.new'));
+          }
         } else {
-        	conversation_box.append(data['messages'][1]);
+          var message = $(data['messages'][1]);
+          if(message.find('span').first().data('sender') == previous_sender){
+            conversation_box.append(message.closest('.old'));
+          } else {
+            conversation_box.append(message.closest('.new'));
+          }
         }
-        conversation_box = conversation.find('.card-body');
+      	conversation_box = conversation.children('.card-body');
         conversation_box.scrollTop(conversation_box[0].scrollHeight);
       }
     },

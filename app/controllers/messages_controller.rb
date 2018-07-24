@@ -28,7 +28,8 @@ class MessagesController < ApplicationController
     render_to_string(
       partial: "partials/my-message",
       locals: {
-        message: @message
+        message: @message,
+        temp_user: true
       }
     )
   end
@@ -37,7 +38,8 @@ class MessagesController < ApplicationController
     render_to_string(
       partial: "partials/message",
       locals: {
-        message: @message
+        message: @message,
+        temp_user: true
       }
     )
   end

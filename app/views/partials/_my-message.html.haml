@@ -1,14 +1,31 @@
-- if session[:temp_user_id].present? && message.user.id === session[:temp_user_id]
-  .row
+- if defined?(temp_user)
+  .row.old
+    %span.d-none{data: {sender: message.user.id}}
     .col-6.offset-6
       .row.float-right.mr-1
         .alert.bg-primary.text-white= message.body
-- else
-  - session[:temp_user_id] = message.user.id
-  .row
+  .row.new
+    %span.d-none{data: {sender: message.user.id}}
     .col-6.offset-6
       .row
         .col-12.text-right
           %small.text-muted= message.user.full_name + " (You)"
       .row.float-right.mr-1
         .alert.bg-primary.text-white= message.body
+- else
+  - if session[:temp_user_id].present? && message.user.id === session[:temp_user_id]
+    .row
+      %span.d-none{data: {sender: message.user.id}}
+      .col-6.offset-6
+        .row.float-right.mr-1
+          .alert.bg-primary.text-white= message.body
+  - else
+    - session[:temp_user_id] = message.user.id
+    .row
+      %span.d-none{data: {sender: message.user.id}}
+      .col-6.offset-6
+        .row
+          .col-12.text-right
+            %small.text-muted= message.user.full_name + " (You)"
+        .row.float-right.mr-1
+          .alert.bg-primary.text-white= message.body

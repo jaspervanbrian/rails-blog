@@ -1,12 +1,12 @@
-- if session[:temp_user_id].present? && message.user.id === session[:temp_user_id]
-  .row
+- if defined?(temp_user)
+  .row.old
+    %span.d-none{data: {sender: message.user.id}}
     .col-1
     .col-6
       .row
         .alert.alert-secondary= message.body
-- else
-  - session[:temp_user_id] = message.user.id
-  .row
+  .row.new
+    %span.d-none{data: {sender: message.user.id}}
     .col-1
       - if message.user.profile_avatar.attached?
         = image_tag message.user.profile_avatar, class: "rounded-circle mr-1", size:"40x40"
@@ -17,3 +17,25 @@
         %small.text-muted= message.user.full_name
       .row
         .alert.alert-secondary= message.body
+- else
+  - if session[:temp_user_id].present? && message.user.id === session[:temp_user_id]
+    .row
+      %span.d-none{data: {sender: message.user.id}}
+      .col-1
+      .col-6
+        .row
+          .alert.alert-secondary= message.body
+  - else
+    - session[:temp_user_id] = message.user.id
+    .row
+      %span.d-none{data: {sender: message.user.id}}
+      .col-1
+        - if message.user.profile_avatar.attached?
+          = image_tag message.user.profile_avatar, class: "rounded-circle mr-1", size:"40x40"
+        - else
+          = image_tag "profile_avatars/default.png", class: "rounded-circle mr-1", size:"40x40"
+      .col-6
+        .row
+          %small.text-muted= message.user.full_name
+        .row
+          .alert.alert-secondary= message.body
