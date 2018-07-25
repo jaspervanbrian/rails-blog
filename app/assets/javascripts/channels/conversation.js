@@ -26,7 +26,8 @@ $(document).on("turbolinks:load", function() {
           } else {
             conversation_box.append(message.closest('.new'));
           }
-        	$("input").val(null);
+        	$("input#message_attachments").val(null);
+          $("label.custom-file-label").text("No attachment selected.");
         	$("textarea").val("");
         } else {
           var message = $(data['messages'][1]);

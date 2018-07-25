@@ -38,6 +38,7 @@ class ConversationsController < ApplicationController
 
   def show
     @conversation = Conversation.find_by(id: params[:id])
+    session[:temp_user_id] = nil
     if @conversation.nil? || !@conversation.users.include?(helpers.current_user)
       flash[:error] = "Conversation does not exist."
       redirect_to conversations_path

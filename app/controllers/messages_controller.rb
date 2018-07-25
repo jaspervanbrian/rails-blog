@@ -4,14 +4,16 @@ class MessagesController < ApplicationController
     conversation = Conversation.find_by(id: params[:conversation_id])
     @message.conversation = conversation
     @message.user = helpers.current_user
-    @message.save
+    if @message.valid?
+      @message.save
 
-    ActionCable.server.broadcast("conversation_#{conversation.id}_channel",
-      messages: [render_my_message, render_message],
-      from: @message.user.id
-    )
+      ActionCable.server.broadcast("conversation_#{conversation.id}_channel",
+        messages: [render_my_message, render_message],
+        from: @message.user.id
+      )
 
-    head :ok
+      head :ok
+    end
   end
 
   private
