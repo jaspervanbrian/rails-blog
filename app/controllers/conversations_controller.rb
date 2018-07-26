@@ -45,9 +45,6 @@ class ConversationsController < ApplicationController
     else
       @conversations = fetch_last_active_conversations
       @message = Message.new
-      ActionCable.server.broadcast("conversation_#{@conversation.id}_channel",
-        messages: []
-      )
     end
   end
 

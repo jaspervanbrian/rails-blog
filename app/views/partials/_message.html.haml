@@ -8,10 +8,10 @@
           .alert.alert-secondary
             = message.body
       - if message.attachments.present?
-        .row
+        .my-2
           - message.attachments.each do |attachment|
             - if attachment.content_type.starts_with?("image/")
-              = image_tag attachment, class: "img-thumbnail m-2"
+              = image_tag attachment, class: "img-thumbnail"
             - elsif attachment.content_type.starts_with?("video/")
               .embed-responsive.embed-responsive-16by9
                 = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "")
@@ -30,10 +30,10 @@
           .alert.alert-secondary
             = message.body
       - if message.attachments.present?
-        .row
+        .my-2
           - message.attachments.each do |attachment|
             - if attachment.content_type.starts_with?("image/")
-              = image_tag attachment, class: "img-thumbnail m-2"
+              = image_tag attachment, class: "img-thumbnail"
             - elsif attachment.content_type.starts_with?("video/")
               .embed-responsive.embed-responsive-16by9
                 = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "")
@@ -48,10 +48,10 @@
             .alert.alert-secondary
               = message.body
         - if message.attachments.present?
-          .row
+          .my-2
             - message.attachments.each do |attachment|
               - if attachment.content_type.starts_with?("image/")
-                = image_tag attachment, class: "img-thumbnail m-2"
+                = image_tag attachment, class: "img-thumbnail"
               - elsif attachment.content_type.starts_with?("video/")
                 .embed-responsive.embed-responsive-16by9
                   = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "")
@@ -72,10 +72,10 @@
             .alert.alert-secondary
               = message.body
         - if message.attachments.present?
-          .row
+          .my-2
             - message.attachments.each do |attachment|
               - if attachment.content_type.starts_with?("image/")
-                = image_tag attachment, class: "img-thumbnail m-2"
+                = image_tag attachment, class: "img-thumbnail"
               - elsif attachment.content_type.starts_with?("video/")
                 .embed-responsive.embed-responsive-16by9
                   = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "")

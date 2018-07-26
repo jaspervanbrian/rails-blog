@@ -1,5 +1,6 @@
 $(document).on("turbolinks:load", function() {
   var conversation = $("#conversation");
+  var conversation_box;
   App.conversation = App.cable.subscriptions.create({
     channel: "ConversationChannel",
     conversation_id: conversation.data("conversation-id")
@@ -16,7 +17,7 @@ $(document).on("turbolinks:load", function() {
     received: function(data) {
       if(data['messages'].length !== 0) {
         // Called when there's incoming data on the websocket for this channel
-      	var conversation_box = $(conversation.children('.card-body').children('.col-12')[0]);
+      	conversation_box = $(conversation.children('.card-body').children('.col-12')[0]);
         var previous_message = conversation_box.children('.row').last();
         var previous_sender = previous_message.children('span').first().data('sender');
         if(data['from'] == conversation.data("me")) {
@@ -37,9 +38,9 @@ $(document).on("turbolinks:load", function() {
             conversation_box.append(message.closest('.new'));
           }
         }
-      	conversation_box = conversation.children('.card-body');
-        conversation_box.scrollTop(conversation_box[0].scrollHeight);
       }
+      conversation_box = conversation.children('.card-body');
+      conversation_box.scrollTop(conversation_box[0].scrollHeight);
     },
   });
 });
