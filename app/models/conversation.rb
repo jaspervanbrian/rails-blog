@@ -6,4 +6,8 @@ class Conversation < ApplicationRecord
 
   scope :single_conversations, -> { where(type: "SingleConversation") }
   scope :group_conversations, -> { where(type: "GroupConversation") }
+
+	def is_participant?(user)
+		self.users.include?(user)
+	end
 end
