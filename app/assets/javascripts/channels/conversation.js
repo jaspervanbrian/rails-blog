@@ -1,7 +1,6 @@
 $(document).on("turbolinks:load", function() {
   var conversation = $("#conversation");
   var conversation_box;
-  console.log(typeof conversation.data("conversation-id"))
   if(typeof conversation.data("conversation-id") !== "undefined") {
     App.conversation = App.cable.subscriptions.create({
       channel: "ConversationChannel",
@@ -46,7 +45,5 @@ $(document).on("turbolinks:load", function() {
         conversation_box.scrollTop(conversation_box[0].scrollHeight);
       },
     });
-  } else {
-    
   }
 });

@@ -1,34 +1,35 @@
 = link_to conversation_path(conversation), class: "list-group-item list-group-item-action flex-column align-items-start" do
   .row
     - last_message = conversation.messages.last
+    - user = nil
     .col-2
       - if conversation.type == "SelfConversation"
-        - @user = current_user
+        - user = current_user
       - elsif conversation.type == "SingleConversation"
-        - @user = conversation.users.where.not(id: current_user.id).first
+        - user = conversation.users.where.not(id: current_user.id).first
       - elsif conversation.type == "GroupConversation"
         - if conversation.logo.attached?
           = image_tag conversation.logo, class: "rounded-circle mr-2", size:"45x45"
         - else
           = image_tag "profile_avatars/default.png", class: "rounded-circle mr-2", size:"45x45"
-      - if @user.present?
-        - if @user.profile_avatar.attached?
-          = image_tag @user.profile_avatar, class: "rounded-circle mr-2", size:"45x45"
+      - if user.present?
+        - if user.profile_avatar.attached?
+          = image_tag user.profile_avatar, class: "rounded-circle mr-2", size:"45x45"
         - else
           = image_tag "profile_avatars/default.png", class: "rounded-circle mr-2", size:"45x45"
     .col-10
       .d-flex.w-100.justify-content-between
         .profile-link.font-weight-bold
-          - if @user.present?
-            = truncate(@user.full_name, length: 20)
-          - else
+          - if conversation.type == "GroupConversation"
             = truncate(conversation.name, length: 20)
+          - else
+            = truncate(user.full_name, length: 20)
         %small= time_ago_in_words(last_message.created_at) + " ago"
       %p
         - if last_message.body.present?
           = truncate(last_message.body, length: 35)
         - elsif last_message.attachments.present?
-          - if last_message.user.id === @user.id
-            = @user.first_name + " sent an attachment."
-          - else
+          - if last_message.user.id === session[:user_id]
             You sent an attachment.
+          - else
+            = last_message.user.first_name + " sent an attachment."
