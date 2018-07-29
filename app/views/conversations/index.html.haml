@@ -2,38 +2,18 @@
 .container-fluid
   .row
     .col-4
-      .list-group#conversations{data: {user_id: session[:user_id]}}
-        - if @conversations.present?
-          - @conversations.each do |conversation|
-            = render partial: "partials/conversation", locals: {conversation: conversation}
-        - else
-          .alert.alert-info
-            No past conversations found.
+      = render partial: "partials/conversations", locals: {conversations: @conversations}
     .col-8
       .card#conversation
         - if params[:to_id].present?
           .card-header.d-flex.justify-content-center
             %h5= @user.full_name
           .card-body
-            - if (messages = @conversation.messages).present?
-              - messages.each do |message|
-                .row
-                  %p= message.body
-            - else
-              .row
+            .row
+              .col-12
                 .alert.alert-info.w-100.d-flex.justify-content-center
                   No messages yet.
           .card-footer
-            = form_with scope: :message, url: @conversation.new_record? ? conversations_path(to_id: @user.id) : conversation_path(@conversation), method: :post, local: true do |form|
+            = form_with scope: :message, url: params[:to_id].present? ? conversations_path(to_id: @user.id) : conversation_path(@conversation), method: :post, local: true do |form|
               .row
-                .col-9
-                  = form.text_area :body, class: "form-control", placeholder: "Say something...", rows: 3
-                  %small.text-muted Add photos/videos
-                  .custom-file
-                    = form.file_field :attachments, multiple: true, accept: "image/*,video/*", class: "custom-file-input"
-                    = form.label :attachments, class: "custom-file-label" do
-                      No attachment selected.
-                .col-3.d-flex.align-items-center
-                  = button_tag type: "submit", class: "btn btn-outline-danger btn-block h-75" do
-                    %h2
-                      = icon("fas", "paper-plane")
+                = render partial: "messages/form", locals: {form: form}

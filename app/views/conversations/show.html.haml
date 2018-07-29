@@ -2,13 +2,7 @@
 .container-fluid
   .row
     .col-4
-      .list-group#conversations{data: {"user-id": session[:user_id]}}
-        - if @conversations.present?
-          - @conversations.each do |conversation|
-            = render partial: "partials/conversation", locals: {conversation: conversation}
-        - else
-          .alert.alert-info
-            No past conversations found.
+      = render partial: "partials/conversations", locals: {conversations: @conversations}
     .col-8
       .card#conversation{data: {"conversation-id": @conversation.id, "me": current_user.id}}
         .card-header.d-flex.justify-content-center
@@ -32,14 +26,4 @@
         .card-footer
           = form_with model: @message, url: conversation_messages_path(@conversation) do |form|
             .row
-              .col-9
-                = form.text_area :body, class: "form-control", placeholder: "Say something...", rows: 3
-                %small.text-muted Add photos/videos
-                .custom-file
-                  = form.file_field :attachments, multiple: true, accept: "image/*,video/*", class: "custom-file-input"
-                  = form.label :attachments, class: "custom-file-label" do
-                    No attachment selected.
-              .col-3.d-flex.align-items-center
-                = button_tag type: "submit", class: "btn btn-outline-danger btn-block h-75" do
-                  %h2
-                    = icon("fas", "paper-plane")
+              = render partial: "messages/form", locals: {form: form}

@@ -1,0 +1,6 @@
+.list-group#conversations{data: {"user-id": session[:user_id]}}
+  - if conversations.present?
+    = render partial: "partials/conversation", collection: conversations
+  - else
+    .alert.alert-info
+      No past conversations found.
