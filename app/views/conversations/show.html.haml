@@ -2,7 +2,7 @@
 .container-fluid
   .row
     .col-4
-      .list-group#conversations
+      .list-group#conversations{data: {"user-id": session[:user_id]}}
         - if @conversations.present?
           - @conversations.each do |conversation|
             = render partial: "partials/conversation", locals: {conversation: conversation}
