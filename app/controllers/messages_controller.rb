@@ -14,8 +14,7 @@ class MessagesController < ApplicationController
 
       conversation.user_ids.each do |user_id|
         ActionCable.server.broadcast("conversations_#{user_id}",
-          messages: [render_my_message, render_message],
-          from: @message.user.id
+          conversation: render_conversation_partial(conversation)
         )
       end
 

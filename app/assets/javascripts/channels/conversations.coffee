@@ -12,3 +12,10 @@ $(document).on "turbolinks:load", ->
 
     received: (data) ->
       # Called when there's incoming data on the websocket for this channel
+      if(data['conversation'])
+        conversation = $(data['conversation'])
+        if(conversations.children("a#" + conversation.attr("id")).length)
+          conversations.children("a#" + conversation.attr("id")).remove()
+        else if(conversations.children(".alert.alert-info").length)
+          conversations.children(".alert.alert-info").remove()
+        conversations.prepend(conversation)

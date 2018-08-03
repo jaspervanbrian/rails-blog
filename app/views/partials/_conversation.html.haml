@@ -1,4 +1,6 @@
-= link_to conversation_path(conversation), class: "list-group-item list-group-item-action flex-column align-items-start" do
+= link_to conversation_path(conversation),
+  class: "list-group-item list-group-item-action flex-column align-items-start",
+  id: "conversation_" + conversation.id do
   .row
     - last_message = conversation.messages.last
     - user = nil
