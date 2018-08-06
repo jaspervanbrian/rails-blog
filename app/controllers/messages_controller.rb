@@ -14,7 +14,11 @@ class MessagesController < ApplicationController
 
       conversation.user_ids.each do |user_id|
         ActionCable.server.broadcast("conversations_#{user_id}",
-          conversation: render_conversation_partial(conversation)
+          conversation: if (conversation.type == "SingleConversation") && (user_id != helpers.current_user.id)
+                          render_conversation_partial(conversation, helpers.current_user)
+                        else
+                          render_conversation_partial(conversation)
+                        end
         )
       end
 
@@ -28,13 +32,23 @@ class MessagesController < ApplicationController
     params.require(:message).permit(:body, attachments: [])
   end
 
-  def render_conversation_partial(conversation)
-    render_to_string(
-      partial: "partials/conversation",
-      locals: {
-        conversation: conversation
-      }
-    )
+  def render_conversation_partial(conversation, temp_user = nil)
+    if temp_user.present?
+      render_to_string(
+        partial: "partials/conversation",
+        locals: {
+          conversation: conversation,
+          temp_user: temp_user
+        }
+      )
+    else
+      render_to_string(
+        partial: "partials/conversation",
+        locals: {
+          conversation: conversation
+        }
+      )
+    end
   end
 
   def render_my_message

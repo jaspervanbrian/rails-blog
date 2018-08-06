@@ -5,16 +5,19 @@
     - last_message = conversation.messages.last
     - user = nil
     .col-2
-      - if conversation.type == "SelfConversation"
-        - user = current_user
-      - elsif conversation.type == "SingleConversation"
-        - user = conversation.users.where.not(id: current_user.id).first
-      - elsif conversation.type == "GroupConversation"
+      - if conversation.type == "GroupConversation"
         - if conversation.logo.attached?
           = image_tag conversation.logo, class: "rounded-circle mr-2", size:"45x45"
         - else
           = image_tag "profile_avatars/default.png", class: "rounded-circle mr-2", size:"45x45"
-      - if user.present?
+      - else
+        - if conversation.type == "SelfConversation"
+          - user = current_user
+        - elsif conversation.type == "SingleConversation"
+          - if defined?(temp_user)
+            - user = temp_user
+          - else
+            - user = conversation.users.where.not(id: current_user.id).first
         - if user.profile_avatar.attached?
           = image_tag user.profile_avatar, class: "rounded-circle mr-2", size:"45x45"
         - else
