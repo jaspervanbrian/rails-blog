@@ -34,4 +34,4 @@
           - if last_message.user.id === session[:user_id]
             You sent an attachment.
           - else
-            = last_message.user.first_name + " sent an attachment."
+            = truncate(last_message.user.first_name + " sent an attachment.", length: 35)
