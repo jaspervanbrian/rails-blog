@@ -33,6 +33,9 @@ gem 'mini_magick', '~> 4.8'
 # HAML
 gem "haml-rails"
 
+# momentjs
+gem 'momentjs-rails'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
