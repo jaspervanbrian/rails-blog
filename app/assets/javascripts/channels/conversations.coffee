@@ -14,6 +14,13 @@ $(document).on "turbolinks:load", ->
       # Called when there's incoming data on the websocket for this channel
       if(data['conversation'])
         conversation = $(data['conversation'])
+        actual_timestamp = $(conversation.find('.timestamp').first())
+        last_message_date = moment(actual_timestamp.data('timestamp'), "YYYY-MM-DD HH:mm:ss")
+        if(moment().isBefore(last_message_date, 'year'))
+          actual_timestamp.text(last_message_date.month() + "/" + last_message_date.date() + "/" + last_message_date.year())
+        else
+          actual_timestamp.text(last_message_date.fromNow())
+
         if(conversations.children("a#" + conversation.attr("id")).length)
           conversations.children("a#" + conversation.attr("id")).remove()
         else if(conversations.children(".alert.alert-info").length)

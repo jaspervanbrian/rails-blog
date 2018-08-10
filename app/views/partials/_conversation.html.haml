@@ -29,7 +29,7 @@
             = truncate(conversation.name, length: 20)
           - else
             = truncate(user.full_name, length: 20)
-        %small= time_ago_in_words(last_message.created_at) + " ago"
+        %small.timestamp{data: {timestamp: last_message.created_at}}
       %p
         - if last_message.body.present?
           = truncate(last_message.body, length: 35)
