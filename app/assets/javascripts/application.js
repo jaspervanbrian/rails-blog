@@ -23,7 +23,7 @@
 
 //= require_tree .
 
-$(document).ready(function() {
+$(document).on("turbolinks:load", function() {
 	$(".flash-message").delay(3000).slideUp(1000);
 	$(':file').on('change', function() {
 		var filename = $(this).val();
@@ -33,4 +33,5 @@ $(document).ready(function() {
 			$(this).closest(".custom-file").find("label").text("No attachment selected.");
 		}
 	});
+	$('[data-toggle="tooltip"]').tooltip();
 });
