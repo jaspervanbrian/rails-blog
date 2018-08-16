@@ -6,8 +6,9 @@
         .col-10
           %input.form-control
         .col-2
-          %button.btn.btn-danger
-            = icon("fas", "plus") + " " + icon("fas", "users")
+          %span{data: {toggle: "tooltip", placement: "top"}, title: "Create a group conversation"}
+            %button.btn.btn-danger{data: {toggle: "modal", target: "#newGroupConversation"}, type: "button"}
+              = icon("fas", "plus") + " " + icon("fas", "users")
       .row.my-3
         .col-12
           = render partial: "partials/conversations", locals: {conversations: @conversations}
@@ -25,3 +26,5 @@
             = form_with scope: :message, url: params[:to_id].present? ? conversations_path(to_id: @user.id) : conversation_path(@conversation), method: :post, local: true do |form|
               .row
                 = render partial: "messages/form", locals: {form: form}
+
+= render partial: "conversations/new-group-conversation"

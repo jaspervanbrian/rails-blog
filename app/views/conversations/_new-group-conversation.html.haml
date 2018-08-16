@@ -1,0 +1,13 @@
+.modal.fade#newGroupConversation{tabindex: -1, role: "dialog", aria: {labelledby: "newGroupConversationTitle", hidden: true}}
+  .modal-dialog.modal-lg{role: "document"}
+    .modal-content
+      .modal-header
+        %h5.modal-title#newGroupConversationTitle New group conversation
+        %button.close{type: "button", aria: {label: "Close"}, data: {dismiss: "modal"}}
+          %span{aria: {hidden: true}}
+            = icon("fas", "times")
+      .modal-body
+      .modal-footer
+        %button.btn.btn-secondary{data: {dismiss: "modal"}} Close
+        %button.btn.btn-danger Create
+        
