@@ -2,7 +2,15 @@
 .container-fluid
   .row
     .col-4
-      = render partial: "partials/conversations", locals: {conversations: @conversations}
+      .row
+        .col-10
+          %input.form-control
+        .col-2
+          %button.btn.btn-danger
+            = icon("fas", "plus") + " " + icon("fas", "users")
+      .row.my-3
+        .col-12
+          = render partial: "partials/conversations", locals: {conversations: @conversations}
     .col-8
       .card#conversation
         - if params[:to_id].present?

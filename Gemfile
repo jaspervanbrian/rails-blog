@@ -45,7 +45,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Frontend
 gem 'bootstrap', '~> 4.1.1'
 gem 'jquery-rails'
-gem 'font-awesome-sass', '~> 5.0.13'
+gem 'font-awesome-sass', '~> 5.2.0'
 
 # Pagination
 gem 'kaminari'
