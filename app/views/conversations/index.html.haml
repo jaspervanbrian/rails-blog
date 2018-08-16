@@ -3,12 +3,7 @@
   .row
     .col-4
       .row
-        .col-10
-          %input.form-control
-        .col-2
-          %span{data: {toggle: "tooltip", placement: "top"}, title: "Create a group conversation"}
-            %button.btn.btn-danger{data: {toggle: "modal", target: "#newGroupConversation"}, type: "button"}
-              = icon("fas", "plus") + " " + icon("fas", "users")
+        = render partial: "conversations/searchbar-conversation"
       .row.my-3
         .col-12
           = render partial: "partials/conversations", locals: {conversations: @conversations}

@@ -2,7 +2,11 @@
 .container-fluid
   .row
     .col-4
-      = render partial: "partials/conversations", locals: {conversations: @conversations}
+      .row
+        = render partial: "conversations/searchbar-conversation"
+      .row.my-3
+        .col-12
+          = render partial: "partials/conversations", locals: {conversations: @conversations}
     .col-8
       .card#conversation{data: {"conversation-id": @conversation.id, "me": current_user.id}}
         .card-header.d-flex.justify-content-center
@@ -14,6 +18,7 @@
         .card-body
           .col-12
             - if (messages = @conversation.messages.includes(:user)).present?
+              - prev_msg = nil
               - messages.each do |message|
                 - if current_user.id === message.user.id
                   = render partial: "partials/my-message", locals: {message: message}

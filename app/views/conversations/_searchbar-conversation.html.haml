@@ -1,0 +1,6 @@
+.col-10
+  %input.form-control
+.col-2
+  %span{data: {toggle: "tooltip", placement: "top"}, title: "Create a group conversation"}
+    %button.btn.btn-danger{data: {toggle: "modal", target: "#newGroupConversation"}, type: "button"}
+      = icon("fas", "plus") + " " + icon("fas", "users")
