@@ -20,10 +20,16 @@
             - if (messages = @conversation.messages.includes(:user)).present?
               - prev_msg = nil
               - messages.each do |message|
+                - if prev_msg.present?
+                  - if ((message.created_at - prev_msg.created_at) / 1.hour).round >= 2
+                    = render partial: "conversations/timestamp", locals: {message: message}
+                - else
+                  = render partial: "conversations/timestamp", locals: {message: message}
                 - if current_user.id === message.user.id
                   = render partial: "partials/my-message", locals: {message: message}
                 - else
                   = render partial: "partials/message", locals: {message: message}
+                - prev_msg = message
             - else
               .row
                 .alert.alert-info.w-100.d-flex.justify-content-center
