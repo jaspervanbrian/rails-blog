@@ -23,6 +23,7 @@
                 - if prev_msg.present?
                   - if ((message.created_at - prev_msg.created_at) / 1.hour).round >= 2
                     = render partial: "conversations/timestamp", locals: {message: message}
+                    - session[:temp_user_id] = nil
                 - else
                   = render partial: "conversations/timestamp", locals: {message: message}
                 - if current_user.id === message.user.id

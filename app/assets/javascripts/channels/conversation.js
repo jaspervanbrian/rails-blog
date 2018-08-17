@@ -24,26 +24,13 @@ $(document).on("turbolinks:load", function() {
           var previous_sender = previous_message.children('span').first().data('sender');
           if(data['from'] == conversation.data("me")) {
             var message = $(data['messages'][0]);
-            if(message.find('span').first().data('sender') == previous_sender){
-              conversation_box.append(message.closest('.old'));
-              message.closest('.old').find('[data-toggle="tooltip"]').tooltip();
-            } else {
-              conversation_box.append(message.closest('.new'));
-              message.closest('.new').find('[data-toggle="tooltip"]').tooltip();
-            }
           	$("input#message_attachments").val(null);
             $("label.custom-file-label").text("No attachment selected.");
           	$("textarea").val("");
           } else {
             var message = $(data['messages'][1]);
-            if(message.find('span').first().data('sender') == previous_sender){
-              conversation_box.append(message.closest('.old'));
-              message.closest('.old').find('[data-toggle="tooltip"]').tooltip();
-            } else {
-              conversation_box.append(message.closest('.new'));
-              message.closest('.new').find('[data-toggle="tooltip"]').tooltip();
-            }
           }
+          insertMessage(conversation_box, message, previous_sender);
         }
         conversation_box = conversation.children('.card-body');
         conversation_box.scrollTop(conversation_box[0].scrollHeight);
@@ -51,3 +38,15 @@ $(document).on("turbolinks:load", function() {
     });
   }
 });
+
+function insertMessage(conversation_box, message, previous_sender) {
+  if(message.find('span').first().data('sender') == previous_sender){
+    conversation_box.append(message.closest('.old'));
+    message.closest('.old').find('[data-toggle="tooltip"]').tooltip();
+    message.closest('.new').remove();
+  } else {
+    conversation_box.append(message.closest('.new'));
+    message.closest('.new').find('[data-toggle="tooltip"]').tooltip();
+    message.closest('.old').remove();
+  }
+}
