@@ -4,16 +4,16 @@
     .col-8.offset-4
       - if message.body.present?
         .row.float-right.mr-1
-          .alert.bg-primary.text-white{data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p")}
+          .alert.bg-primary.text-white{data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p")}
             = message.body
       - if message.attachments.present?
         .col-12.text-right.my-2
           - message.attachments.each do |attachment|
             - if attachment.content_type.starts_with?("image/")
-              = image_tag attachment, class: "img-thumbnail", data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p")
+              = image_tag attachment, class: "img-thumbnail", data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p")
             - elsif attachment.content_type.starts_with?("video/")
               .embed-responsive.embed-responsive-16by9.m-2
-                = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "", data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p"))
+                = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "", data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p"))
   .row.new
     %span.d-none{data: {sender: message.user.id}}
     .col-8.offset-4
@@ -22,16 +22,16 @@
           %small.text-muted= message.user.full_name + " (You)"
       - if message.body.present?
         .row.float-right.mr-1
-          .alert.bg-primary.text-white{data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p")}
+          .alert.bg-primary.text-white{data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p")}
             = message.body
       - if message.attachments.present?
         .col-12.text-right.my-2
           - message.attachments.each do |attachment|
             - if attachment.content_type.starts_with?("image/")
-              = image_tag attachment, class: "img-thumbnail", data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p")
+              = image_tag attachment, class: "img-thumbnail", data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p")
             - elsif attachment.content_type.starts_with?("video/")
               .embed-responsive.embed-responsive-16by9.m-2
-                = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "", data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p"))
+                = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "", data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p"))
 - else
   - if session[:temp_user_id].present? && message.user.id === session[:temp_user_id]
     .row
@@ -39,16 +39,16 @@
       .col-8.offset-4
         - if message.body.present?
           .row.float-right.mr-1
-            .alert.bg-primary.text-white{data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p")}
+            .alert.bg-primary.text-white{data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p")}
               = message.body
         - if message.attachments.present?
           .col-12.text-right.my-2
             - message.attachments.each do |attachment|
               - if attachment.content_type.starts_with?("image/")
-                = image_tag attachment, class: "img-thumbnail", data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p")
+                = image_tag attachment, class: "img-thumbnail", data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p")
               - elsif attachment.content_type.starts_with?("video/")
                 .embed-responsive.embed-responsive-16by9.m-2
-                  = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "", data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p"))
+                  = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "", data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p"))
   - else
     - session[:temp_user_id] = message.user.id
     .row
@@ -59,13 +59,13 @@
             %small.text-muted= message.user.full_name + " (You)"
         - if message.body.present?
           .row.float-right.mr-1
-            .alert.bg-primary.text-white{data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p")}
+            .alert.bg-primary.text-white{data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p")}
               = message.body
         - if message.attachments.present?
           .col-12.text-right.my-2
             - message.attachments.each do |attachment|
               - if attachment.content_type.starts_with?("image/")
-                = image_tag attachment, class: "img-thumbnail", class: "img-thumbnail", data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p")
+                = image_tag attachment, class: "img-thumbnail", class: "img-thumbnail", data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p")
               - elsif attachment.content_type.starts_with?("video/")
                 .embed-responsive.embed-responsive-16by9.m-2
-                  = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "", data: {toggle: "tooltip", placement: "left"}, title: message.created_at.strftime("%b %d, %l:%M %p"))
+                  = video_tag(url_for(attachment), class: "embed-responsive-item", controls: "", data: {toggle: "tooltip", placement: "left", timestamp: message.created_at}, title: message.created_at.strftime("%b %d, %l:%M %p"))
