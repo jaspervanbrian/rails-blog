@@ -39,3 +39,5 @@
           = form_with model: @message, url: conversation_messages_path(@conversation) do |form|
             .row
               = render partial: "messages/form", locals: {form: form}
+
+= render partial: "conversations/new-group-conversation"

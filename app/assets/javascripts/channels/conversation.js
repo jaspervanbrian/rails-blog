@@ -43,9 +43,7 @@ function insertMessage(conversation_box, message, previous_message) {
   var previous_message_timestamp = moment(previous_message.find('[data-timestamp]').data("timestamp"), "YYYY-MM-DD HH:mm:ss");
   var message_timestamp = moment(message.find('[data-timestamp]').data("timestamp"), "YYYY-MM-DD HH:mm:ss");
   var previous_sender = previous_message.children('span').first().data('sender');
-  console.log(previous_message_timestamp)
-  console.log(message_timestamp)
-  console.log((message_timestamp.diff(previous_message_timestamp, 'hours')));
+  
   if((message_timestamp.diff(previous_message_timestamp, 'hours')) >= 2) {
     conversation_box.append(`
       <div class="row">
